@@ -4,31 +4,34 @@ import ComplexInput from './ComplexInput'
 import { inputPorcentajeHandle, inputTopeReintegroHandle } from '../services/inputLogic'
 
 interface IState {
-    maxTope: string,
-    porcentajeAhorro: number,
-    topeReintegro: number,
+    maximumRefund: string,
+    userDiscount: number,
+    userRefund: number,
     error: string
 }
 
 export default function CreateForm() {
 
-    const [maxTope, setMaxTope] = useState<IState['maxTope']>()
+    const [maximumRefund, setMaximumRefund] = useState<IState['maximumRefund']>()
 
-    const [porcentajeAhorro, setPorcentajeAhorro] = useState<IState['porcentajeAhorro']>(15)
+    const [userDiscount, setUserDiscount] = useState<IState['userDiscount']>(15)
 
-    const [topeReintegro, setTopeReintegro] = useState<IState['topeReintegro']>(1000)
+    const [userRefund, setUserRefund] = useState<IState['userRefund']>(1000)
 
-    const [errorPorcentaje, setErrorPorcentaje] = useState<IState['error']>()
+    const [discountError, setDiscountError] = useState<IState['error']>()
 
-    const [errorTope, setErrorTope] = useState<IState['error']>()
+    const [refundError, setRefundError] = useState<IState['error']>()
 
 
     useEffect(() => {
-        if (porcentajeAhorro <= 100 && porcentajeAhorro >= 1 && topeReintegro >= 0 && topeReintegro <= 10000000) {
-            const calculateMaxTope = (topeReintegro * (100 / porcentajeAhorro)).toFixed(2)
-            setMaxTope(calculateMaxTope)
+        if (userDiscount <= 100 && userDiscount >= 1 && userRefund >= 0 && userRefund <= 10000000) {
+            const calcMaximumRefund = (userRefund * (100 / userDiscount)).toFixed(2)
+            setMaximumRefund(calcMaximumRefund)
         }
-    }, [porcentajeAhorro, topeReintegro])
+    }, [userDiscount, userRefund])
+
+
+
 
     return (
         <>
@@ -41,15 +44,15 @@ export default function CreateForm() {
                     OnChangeFunction={
                         (e: any) => {
                             if (inputPorcentajeHandle(e) === 'inputError') {
-                                setErrorPorcentaje('El porcentaje minimo es 1 y el maximo 100')
+                                setDiscountError('El porcentaje minimo es 1 y el maximo 100')
                             } else {
-                                setPorcentajeAhorro(inputPorcentajeHandle(e))
-                                setErrorPorcentaje('')
+                                setUserDiscount(inputPorcentajeHandle(e))
+                                setDiscountError('')
                             }
                         }
                     }
                     inputText='%'
-                    errorMessage={errorPorcentaje}
+                    errorMessage={discountError}
                 />
 
                 <ComplexInput
@@ -60,19 +63,19 @@ export default function CreateForm() {
                     OnChangeFunction={
                         (e: any) => {
                             if (inputTopeReintegroHandle(e) === 'inputError') {
-                                setErrorTope('El tope de reintegro minimo es 0 y el maximo 10000000')
+                                setRefundError('El tope de reintegro minimo es 0 y el maximo 10000000')
                             } else {
-                                setTopeReintegro(inputTopeReintegroHandle(e))
-                                setErrorTope('')
+                                setUserRefund(inputTopeReintegroHandle(e))
+                                setRefundError('')
                             }
                         }
                     }
                     inputText='$'
-                    errorMessage={errorTope}
+                    errorMessage={refundError}
                 />
             </div>
 
-            {maxTope && !errorPorcentaje && !errorTope && <p className='my-3 text-center'>¡ Podes gastar <b>$ {maxTope}</b> para aprovechar el total del descuento !</p>}
+            {maximumRefund && !discountError && !refundError && <p className='my-3 text-center'>¡ Podes gastar <b>$ {maximumRefund}</b> para aprovechar el total del descuento !</p>}
 
             <div className="d-flex justify-content-center align-items-center py-3">
                 <a href="#AddDiscount" className='btn btn-outline-success '>Agregar descuento</a>

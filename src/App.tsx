@@ -3,12 +3,14 @@ import CreateForm from './components/CreateForm';
 import CreadorDescuento from './components/MisDescuentos';
 import Descuento from './components/Descuento';
 
+import DiscountsContextProvider from './context/DiscountsContext';
+
 
 
 
 function App() {
   return (
-    <>
+    <DiscountsContextProvider>
       <section className='container my-2 py-2'>
         <div className='py-2'>
           <h1 className="text-center">Calculadora de beneficios cuenta dni</h1>
@@ -35,7 +37,7 @@ function App() {
         <CreadorDescuento />
         <Descuento />
       </section>
-    </>
+    </DiscountsContextProvider>
   );
 }
 

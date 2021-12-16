@@ -4,7 +4,7 @@ interface IState {
     globalMaximumRefund: string,
     globalDiscount: number,
     globalRefund: number,
-    allUserDiscounts: object
+    allUserDiscounts: object | []
     
 }
 
@@ -22,7 +22,7 @@ export default function DiscountsContextProvider({ children }: any) {
 
     const [globalRefund, setGlobalRefund] = useState<IState['globalRefund']>()
 
-    const [allUserDiscounts, setAllUserDiscounts] = useState<IState['allUserDiscounts']>()
+    const [allUserDiscounts, setAllUserDiscounts] = useState<IState['allUserDiscounts']>([])
 
   
 

@@ -1,7 +1,7 @@
 export const inputPorcentajeHandle = (e: any) => {
     const value: any = parseInt(e.target.value)
 
-    if (value > 0 && value <= 100) {
+    if (value >= 0 && value <= 100) {
         return value
     }
     else {

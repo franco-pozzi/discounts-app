@@ -3,9 +3,9 @@ export default function ComplexInput({ inputId, labelText, placeHolder, inputTyp
         <>
             <label className='col my-2' htmlFor={inputId}>{labelText}</label>
             <div className="col my-2">
-                <div className="input-group flex-nowrap">
+                <div className="input-group flex-nowrap ">
                     {inputText === '$' && <span className='input-group-text'>{inputText}</span>}
-                    <input className='form-control text-center' id={inputId} placeholder={placeHolder} type={inputType} onChange={OnChangeFunction} value={value}/>
+                    <input className={`form-control text-center ${errorMessage && 'input-error'}`}  id={inputId} placeholder={placeHolder} type={inputType} onChange={OnChangeFunction} value={value || ''}/>
                     {inputText === '%' && <span className='input-group-text'>{inputText}</span>}
                 </div>
             </div>

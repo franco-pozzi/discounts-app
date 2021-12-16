@@ -1,9 +1,9 @@
-import { useState, useEffect,useContext } from 'react'
+import { useState, useEffect, useContext } from 'react'
 import ComplexInput from './ComplexInput'
 
 import { inputPorcentajeHandle, inputTopeReintegroHandle } from '../services/inputLogic'
 
-import {DiscountsContext} from '../context/DiscountsContext'
+import { DiscountsContext } from '../context/DiscountsContext'
 
 interface IState {
     maximumRefund: string,
@@ -16,9 +16,9 @@ export default function CreateForm() {
 
     const [maximumRefund, setMaximumRefund] = useState<IState['maximumRefund']>()
 
-    const [userDiscount, setUserDiscount] = useState<IState['userDiscount']>(15)
+    const [userDiscount, setUserDiscount] = useState<IState['userDiscount']>()
 
-    const [userRefund, setUserRefund] = useState<IState['userRefund']>(1000)
+    const [userRefund, setUserRefund] = useState<IState['userRefund']>()
 
     const [discountError, setDiscountError] = useState<IState['error']>()
 
@@ -26,19 +26,19 @@ export default function CreateForm() {
 
 
     useEffect(() => {
-        if (userDiscount <= 100 && userDiscount >= 1 && userRefund >= 0 && userRefund <= 10000000) {
+        if (userDiscount && userRefund) {
             const calcMaximumRefund = (userRefund * (100 / userDiscount)).toFixed(2)
             setMaximumRefund(calcMaximumRefund)
         }
     }, [userDiscount, userRefund])
 
-    const {setGlobalDiscount, setGlobalRefund} = useContext(DiscountsContext)
+    const { setGlobalDiscount, setGlobalRefund } = useContext(DiscountsContext)
 
 
     const addDiscountAction = () => {
-        if (!discountError && !refundError){
-            setGlobalDiscount(userDiscount)
-            setGlobalRefund(userRefund)
+        if (!discountError && !refundError) {
+            userDiscount && setGlobalDiscount(userDiscount)
+            userRefund && setGlobalRefund(userRefund)
         }
     }
 
@@ -54,14 +54,16 @@ export default function CreateForm() {
                         (e: any) => {
                             if (inputPorcentajeHandle(e) === 'inputError') {
                                 setDiscountError('El porcentaje minimo es 1 y el maximo 100')
+                                setUserDiscount(undefined)
                             } else {
+                                setDiscountError(undefined)
                                 setUserDiscount(inputPorcentajeHandle(e))
-                                setDiscountError('')
                             }
                         }
                     }
                     inputText='%'
                     errorMessage={discountError}
+                    value={userDiscount ? userDiscount : ''}
                 />
 
                 <ComplexInput
@@ -72,15 +74,18 @@ export default function CreateForm() {
                     OnChangeFunction={
                         (e: any) => {
                             if (inputTopeReintegroHandle(e) === 'inputError') {
-                                setRefundError('El tope de reintegro minimo es 0 y el maximo 10000000')
+                                setRefundError('El tope de reintegro minimo es 1 y el maximo 10000000')
+                                setUserRefund(undefined)
                             } else {
+                                setRefundError(undefined)
                                 setUserRefund(inputTopeReintegroHandle(e))
-                                setRefundError('')
                             }
                         }
                     }
                     inputText='$'
                     errorMessage={refundError}
+                    value={userRefund ? userRefund : ''}
+
                 />
             </div>
 

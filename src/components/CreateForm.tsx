@@ -1,7 +1,9 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect,useContext } from 'react'
 import ComplexInput from './ComplexInput'
 
 import { inputPorcentajeHandle, inputTopeReintegroHandle } from '../services/inputLogic'
+
+import {DiscountsContext} from '../context/DiscountsContext'
 
 interface IState {
     maximumRefund: string,
@@ -30,8 +32,15 @@ export default function CreateForm() {
         }
     }, [userDiscount, userRefund])
 
+    const {setGlobalDiscount, setGlobalRefund} = useContext(DiscountsContext)
 
 
+    const addDiscountAction = () => {
+        if (!discountError && !refundError){
+            setGlobalDiscount(userDiscount)
+            setGlobalRefund(userRefund)
+        }
+    }
 
     return (
         <>
@@ -78,7 +87,7 @@ export default function CreateForm() {
             {maximumRefund && !discountError && !refundError && <p className='my-3 text-center'>¡ Podes gastar <b>$ {maximumRefund}</b> para aprovechar el total del descuento !</p>}
 
             <div className="d-flex justify-content-center align-items-center py-3">
-                <a href="#AddDiscount" className='btn btn-outline-success '>Agregar descuento</a>
+                <a href="#AddDiscount" className='btn btn-outline-success' onClick={addDiscountAction}>Agregar descuento</a>
             </div>
         </>
     )

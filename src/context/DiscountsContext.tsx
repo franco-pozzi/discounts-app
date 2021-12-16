@@ -4,10 +4,8 @@ interface IState {
     globalMaximumRefund: string,
     globalDiscount: number,
     globalRefund: number,
-    globalDiscountExpiration: string,
-    globalMaximumSpending: number,
-    globalRemainingAmount: number,
-    globalRemainingDays: number
+    allUserDiscounts: object
+    
 }
 
 
@@ -24,22 +22,17 @@ export default function DiscountsContextProvider({ children }: any) {
 
     const [globalRefund, setGlobalRefund] = useState<IState['globalRefund']>()
 
-    const [globalDiscountExpiration, setGlobalDiscountExpiration] = useState<IState['globalDiscountExpiration']>()
+    const [allUserDiscounts, setAllUserDiscounts] = useState<IState['allUserDiscounts']>()
 
-    const [globalMaximumSpending, setGlobalMaximumSpending] = useState<IState['globalMaximumSpending']>()
-
-    const [globalRemainingAmount, setGlobalRemainignAmount] = useState<IState['globalRemainingAmount']>()
-
-    const [globalRemainingDays, setGlobalRemainingDays] = useState<IState['globalRemainingDays']>()
+  
 
 
     useEffect(() => {
         if (globalDiscount && globalRefund) {
             setGlobalMaximumRefund((globalRefund * (100 / globalDiscount)).toFixed(2))  // Calculated Maximum Refund
         }
-    }, [globalDiscount, globalRefund])
+    }, [globalDiscount, globalRefund])    
     
-
     return (
         <DiscountsContext.Provider value={
             {
@@ -48,14 +41,8 @@ export default function DiscountsContextProvider({ children }: any) {
                 setGlobalDiscount,
                 globalRefund,
                 setGlobalRefund,
-                globalDiscountExpiration,
-                setGlobalDiscountExpiration,
-                globalMaximumSpending,
-                setGlobalMaximumSpending,
-                globalRemainingAmount,
-                setGlobalRemainignAmount,
-                globalRemainingDays,
-                setGlobalRemainingDays
+                allUserDiscounts,
+                setAllUserDiscounts
             }
         }>
             {children}

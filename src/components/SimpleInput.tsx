@@ -3,9 +3,9 @@ export default function SimpleInput({ inputId, labelText, placeHolder, inputType
         <>
             <div className='col my-2'>
                 <label className='form-label' htmlFor={inputId}>{labelText}</label>
-                <input className='form-control text-center' id={inputId} placeholder={placeHolder} type={inputType} onChange={OnChangeFunction} />
+                <input className={`form-control text-center ${errorMessage && 'input-error'}`} id={inputId} placeholder={placeHolder} type={inputType} onChange={OnChangeFunction} />
             </div>
-            {errorMessage && <span className='col my-3 w-100 text-center'>* {errorMessage}</span>}
+            {errorMessage && <span className='col mb-2 w-100 text-center' style={{ color: 'red' }}>* {errorMessage} *</span>}
         </>
     )
 }

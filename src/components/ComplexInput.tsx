@@ -10,7 +10,7 @@ export default function ComplexInput({ inputId, labelText, placeHolder, inputTyp
                 </div>
             </div>
 
-            {errorMessage && <span className='col my-3 w-100 text-center'>* {errorMessage}</span>}
+            {errorMessage && <span className='col mb-2 w-100 text-center' style={{ color: 'red' }}>* {errorMessage} *</span>}
         </>
     )
 }

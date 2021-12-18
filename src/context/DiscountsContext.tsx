@@ -8,9 +8,6 @@ interface IState {
     
 }
 
-
-
-
 export const DiscountsContext: any = createContext('no-provider')
 
 

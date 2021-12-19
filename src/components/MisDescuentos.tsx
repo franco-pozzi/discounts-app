@@ -18,7 +18,7 @@ interface IState {
 
 export default function CreadorDescuento() {
 
-    const { globalDiscount, setGlobalDiscount, globalRefund, setGlobalRefund, allUserDiscounts, setAllUserDiscounts } = useContext(DiscountsContext)
+    const { globalDiscount, setGlobalDiscount, globalRefund, setGlobalRefund, createNewDiscount } = useContext(DiscountsContext)
 
     const [discountName, setDiscountName] = useState<IState['discountName']>()
 
@@ -59,13 +59,13 @@ export default function CreadorDescuento() {
                 const createDate: Date = new Date()
                 const randomNumber: number = Math.floor(Math.random() * 101)
 
-                const discountId: string = `${randomNumber} ${createDate}`
+                const discountId: string = `${randomNumber}'-'${createDate}`
 
                 // Calculate Maximum Spending
                 const maximumSpending = (globalRefund * (100 / globalDiscount)).toFixed(2)
 
                 // Create single discount Object
-                const createDiscount: Object = {
+                const newDiscount: Object = {
                     id: discountId,
                     discountName: discountName,
                     discountAmount: globalDiscount,
@@ -74,7 +74,7 @@ export default function CreadorDescuento() {
                     maximumSpending: maximumSpending,
                 }
 
-                setAllUserDiscounts([...allUserDiscounts, createDiscount])
+                createNewDiscount(newDiscount)
 
                 console.log('succed')
             }

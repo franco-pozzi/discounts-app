@@ -4,8 +4,8 @@ interface IState {
     globalMaximumRefund: string,
     globalDiscount: number,
     globalRefund: number,
-    allUserDiscounts: object | []
-    
+    allUserDiscounts: Array<any>
+
 }
 
 export const DiscountsContext: any = createContext('no-provider')
@@ -21,15 +21,29 @@ export default function DiscountsContextProvider({ children }: any) {
 
     const [allUserDiscounts, setAllUserDiscounts] = useState<IState['allUserDiscounts']>([])
 
-  
+
 
 
     useEffect(() => {
         if (globalDiscount && globalRefund) {
             setGlobalMaximumRefund((globalRefund * (100 / globalDiscount)).toFixed(2))  // Calculated Maximum Refund
         }
-    }, [globalDiscount, globalRefund])    
-    
+    }, [globalDiscount, globalRefund])
+
+    const createNewDiscount = (discount:any) => {
+        const allDiscounts = [...allUserDiscounts, discount]
+        setAllUserDiscounts(allDiscounts)
+        localStorage.setItem("userDiscounts", JSON.stringify(allDiscounts))
+    }
+
+    const deleteDiscount = (discount: any) => {
+        const newDiscountArray = allUserDiscounts.filter(i => i.id !== discount.id)
+
+        setAllUserDiscounts(newDiscountArray)
+        localStorage.setItem("userDiscounts", JSON.stringify(newDiscountArray))
+    }
+
+
     return (
         <DiscountsContext.Provider value={
             {
@@ -39,7 +53,8 @@ export default function DiscountsContextProvider({ children }: any) {
                 globalRefund,
                 setGlobalRefund,
                 allUserDiscounts,
-                setAllUserDiscounts
+                createNewDiscount,
+                deleteDiscount
             }
         }>
             {children}

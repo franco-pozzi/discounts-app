@@ -28,7 +28,7 @@ export const inputFechaVencimientoHandle = (e: any) => {  //Comprobamos que el u
     const formatActualDate: number = parseInt([actualDate.getFullYear(), (actualDate.getMonth() + 1), actualDate.getDate()].join(''))
 
     if (formatActualDate - formatValue <= 0) {
-        return value
+        return value.split('-').reverse().join('-')
     }
     else {
         return 'inputError'

@@ -34,3 +34,14 @@ export const inputFechaVencimientoHandle = (e: any) => {  //Comprobamos que el u
         return 'inputError'
     }
 }
+
+export const inputNewPurchase = (e: any) => {
+    const value: any = parseInt(e.target.value)
+
+    if (value > 0 && value <= 100000) {
+        return value
+    }
+    else {
+        return 'inputError'
+    }
+}

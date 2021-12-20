@@ -72,6 +72,8 @@ export default function CreadorDescuento() {
                     refundAmount: globalRefund,
                     discountExpiration: discountExpiration,
                     maximumSpending: maximumSpending,
+                    newPurchase: [],
+                    remainingAmount: maximumSpending
                 }
 
                 createNewDiscount(newDiscount)

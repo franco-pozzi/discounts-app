@@ -3,6 +3,7 @@ import CreateForm from './components/CreateForm';
 import CreadorDescuento from './components/MisDescuentos';
 import Descuento from './components/Descuento';
 
+
 import DiscountsContextProvider from './context/DiscountsContext';
 
 
@@ -36,6 +37,7 @@ function App() {
         </p>
         <CreadorDescuento />
         <Descuento />
+        
       </section>
     </DiscountsContextProvider>
   );

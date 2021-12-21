@@ -17,7 +17,6 @@ export default function Descuento() {
 
     const [inputError, setInputError] = useState<string | undefined>()
 
-
     const onClickButton = (discount: any): any => {
         if (!inputError && discount) {
             if (purchaseValue) {
@@ -41,8 +40,40 @@ export default function Descuento() {
         }
     }
 
-    const onClickDelete = (a: any, purchase:any) => {
-        deletePurchase(a, purchase)
+    const onClickDelete = (discount: any, purchase: any) => {
+        deletePurchase(discount, purchase)
+    }
+
+    const RemainingDays = ({ discount }: any) => {
+
+        const actualDate: Date = new Date()
+
+        const discountExpirationArray = discount.discountExpiration.split('-')
+
+        const restDates = () => {
+            const fActualDate = Date.UTC(actualDate.getFullYear(), (actualDate.getMonth() + 1), actualDate.getDate())
+            const fdiscountExpirationArray = Date.UTC(discountExpirationArray[2], discountExpirationArray[1], discountExpirationArray[0])
+            const dif = fdiscountExpirationArray - fActualDate
+            const difDays = Math.floor(dif / (1000 * 60 * 60 * 24))
+
+            if (difDays >= 0) {
+                return difDays
+            }
+            else {
+                return 'error'
+            }
+        }
+
+        switch (restDates()) {
+            case 1:
+                return <li className='my-0 fs-6'>1 dia restante</li>
+
+            case 'error':
+                return <li className='mt-3 fs-4 fw-bold text-center' style={{ color: '#198754' }}>Descuento Vencido</li>
+
+            default:
+                return <li className='my-0 fs-6'>{restDates()} dias restantes</li>
+        }
     }
 
 
@@ -59,7 +90,7 @@ export default function Descuento() {
                         <li className='my-0 fs-6'>{purchase.day}</li>
                     </div>
                     <div className='d-flex justify-content-end align-items-center me-2' style={{ width: '25%' }}>
-                        <BsTrash onClick={() => onClickDelete(discount, purchase)} />
+                        <BsTrash onClick={() => onClickDelete(discount, purchase)} />                                           {/* Colocar confirmacion para eliminar con state */}
                     </div>
                 </div>
             </div>
@@ -100,7 +131,8 @@ export default function Descuento() {
                         <span className='text-end'> $ {discount.remainingAmount}</span>
                     </li>
 
-                    <li className='my-0 fs-6'>09 dias restantes</li>
+                    <RemainingDays discount={discount} />
+
                 </ul>
 
                 <div className='input-group my-3 fs-5'>
@@ -112,7 +144,6 @@ export default function Descuento() {
                     <input type="number"
                         placeholder='Ej: 500'
                         className='form-control col-2 text-center'
-                        value={purchaseValue || ''}
                         onChange={
                             (e: any) => {
                                 if (inputNewPurchase(e) === 'inputError') {

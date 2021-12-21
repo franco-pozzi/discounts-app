@@ -55,7 +55,9 @@ export default function DiscountsContextProvider({ children }: any) {
 
         newDiscountArray[0].newPurchase = [...newDiscountArray[0].newPurchase, userPurchase]
 
-        newDiscountArray[0].remainingAmount = (newDiscountArray[0].remainingAmount - userPurchase.amount).toFixed(2)
+        const restAmount = (parseFloat(newDiscountArray[0].remainingAmount) - parseFloat(userPurchase.amount))
+
+        newDiscountArray[0].remainingAmount = restAmount.toFixed(2)
 
         const refreshAllUserDiscount = allUserDiscounts.map((e: any) => e)
 
@@ -69,22 +71,17 @@ export default function DiscountsContextProvider({ children }: any) {
 
         const newPurchaseArray = newDiscountArray[0].newPurchase.filter((i: any) => i.id !== userPurchase.id)
 
-        
         newDiscountArray[0].newPurchase = newPurchaseArray
 
-        
+        const sumAmount = (parseFloat(newDiscountArray[0].remainingAmount) + parseFloat(userPurchase.amount))
 
-        // newDiscountArray[0].remainingAmount = (newDiscountArray[0].remainingAmount + userPurchase.amount).toFixed(2)
+        newDiscountArray[0].remainingAmount = sumAmount.toFixed(2)
 
-       const Leo = (newDiscountArray[0].remainingAmount + userPurchase.amount)
+        const refreshAllUserDiscount = allUserDiscounts.map((e: any) => e)
 
-       console.log(Leo.toFixed(2))
+        setAllUserDiscounts(refreshAllUserDiscount)
 
-    //     const refreshAllUserDiscount = allUserDiscounts.map((e: any) => e)
-
-    //     setAllUserDiscounts(refreshAllUserDiscount)
-
-    //     localStorage.setItem("userDiscounts", JSON.stringify(refreshAllUserDiscount))
+        localStorage.setItem("userDiscounts", JSON.stringify(refreshAllUserDiscount))
     }
 
 

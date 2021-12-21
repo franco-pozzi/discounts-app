@@ -11,7 +11,7 @@ import { BsTrash } from 'react-icons/bs'
 
 export default function Descuento() {
 
-    const { allUserDiscounts, deleteDiscount, addUserPurchase } = useContext(DiscountsContext)
+    const { allUserDiscounts, deleteDiscount, addUserPurchase, deletePurchase } = useContext(DiscountsContext)
 
     const [purchaseValue, setPurchaseValue] = useState<number>()
 
@@ -21,7 +21,15 @@ export default function Descuento() {
     const onClickButton = (discount: any): any => {
         if (!inputError && discount) {
             if (purchaseValue) {
-                addUserPurchase(discount, purchaseValue)
+                const createDate: Date = new Date()
+
+                const purchase = {
+                    amount: purchaseValue,
+                    day: `${createDate.getDate()}-${(createDate.getMonth() + 1)}-${createDate.getFullYear()}`,
+                    id: createDate
+                }
+
+                addUserPurchase(discount, purchase)
                 setPurchaseValue(undefined)
             }
             else {
@@ -33,21 +41,25 @@ export default function Descuento() {
         }
     }
 
+    const onClickDelete = (a: any, purchase:any) => {
+        deletePurchase(a, purchase)
+    }
 
-    const purchaseArray = (discount: any) => {
-        return discount.newPurchase.map((i: any, e: any) =>
-            <div key={e}>
+
+    const PurchaseArray = ({ discount }: any) => {
+        return discount.newPurchase.map((purchase: any) =>
+            <div key={purchase.id}>
                 <div className='my-1 text-end' style={{ paddingRight: '44%' }}>-</div>
                 <div className='d-flex flex-row'>
                     <div className='d-flex flex-column w-100'>
                         <li className="d-flex justify-content-between fs-5">
                             <span className='fw-bolder'>Compra</span>
-                            <span className='text-end'> $ {i}</span>
+                            <span className='text-end'> $ {purchase.amount}</span>
                         </li>
-                        <li className='my-0 fs-6'>09-12-2021</li>
+                        <li className='my-0 fs-6'>{purchase.day}</li>
                     </div>
                     <div className='d-flex justify-content-end align-items-center me-2' style={{ width: '25%' }}>
-                        <BsTrash />
+                        <BsTrash onClick={() => onClickDelete(discount, purchase)} />
                     </div>
                 </div>
             </div>
@@ -77,7 +89,7 @@ export default function Descuento() {
                         <span className='text-end'> $ {discount.maximumSpending}</span>
                     </li>
 
-                    {purchaseArray(discount)}
+                    <PurchaseArray discount={discount} />
                 </ul>
 
                 <div className="border-top my-2"></div>

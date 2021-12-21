@@ -33,8 +33,8 @@ export default function DiscountsContextProvider({ children }: any) {
     useEffect(() => {
         if (globalDiscount && globalRefund) {
             setGlobalMaximumRefund((globalRefund * (100 / globalDiscount)).toFixed(2))  // Calculated Maximum Refund
-        }        
-        
+        }
+
     }, [globalDiscount, globalRefund])
 
     const createNewDiscount = (discount: any) => {
@@ -50,19 +50,43 @@ export default function DiscountsContextProvider({ children }: any) {
         localStorage.setItem("userDiscounts", JSON.stringify(newDiscountArray))
     }
 
-    const addUserPurchase = (discount:any, userPurchase:number) =>{
+    const addUserPurchase = (discount: any, userPurchase: any) => {
         const newDiscountArray = allUserDiscounts.filter((i: any) => i.id === discount.id)
-        
+
         newDiscountArray[0].newPurchase = [...newDiscountArray[0].newPurchase, userPurchase]
 
-        newDiscountArray[0].remainingAmount = (newDiscountArray[0].remainingAmount - userPurchase).toFixed(2)
+        newDiscountArray[0].remainingAmount = (newDiscountArray[0].remainingAmount - userPurchase.amount).toFixed(2)
 
-        const refreshAllUserDiscount = allUserDiscounts.map((e:any) => e)        
+        const refreshAllUserDiscount = allUserDiscounts.map((e: any) => e)
 
         setAllUserDiscounts(refreshAllUserDiscount)
 
         localStorage.setItem("userDiscounts", JSON.stringify(refreshAllUserDiscount))
-    }   
+    }
+
+    const deletePurchase = (discount: any, userPurchase: any) => {
+        const newDiscountArray = allUserDiscounts.filter((i: any) => i.id === discount.id)
+
+        const newPurchaseArray = newDiscountArray[0].newPurchase.filter((i: any) => i.id !== userPurchase.id)
+
+        
+        newDiscountArray[0].newPurchase = newPurchaseArray
+
+        
+
+        // newDiscountArray[0].remainingAmount = (newDiscountArray[0].remainingAmount + userPurchase.amount).toFixed(2)
+
+       const Leo = (newDiscountArray[0].remainingAmount + userPurchase.amount)
+
+       console.log(Leo.toFixed(2))
+
+    //     const refreshAllUserDiscount = allUserDiscounts.map((e: any) => e)
+
+    //     setAllUserDiscounts(refreshAllUserDiscount)
+
+    //     localStorage.setItem("userDiscounts", JSON.stringify(refreshAllUserDiscount))
+    }
+
 
 
     return (
@@ -76,7 +100,8 @@ export default function DiscountsContextProvider({ children }: any) {
                 allUserDiscounts,
                 createNewDiscount,
                 deleteDiscount,
-                addUserPurchase
+                addUserPurchase,
+                deletePurchase
             }
         }>
             {children}

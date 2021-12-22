@@ -12,7 +12,7 @@ interface IState {
     error: string
 }
 
-export default function CreateForm() {
+export default function DiscountCalculator() {
 
     const [maximumRefund, setMaximumRefund] = useState<IState['maximumRefund']>()
 
@@ -84,7 +84,7 @@ export default function CreateForm() {
                     }
                     inputText='$'
                     errorMessage={refundError}
-                    value={userRefund ? userRefund : ''}
+                    value={userRefund}
 
                 />
             </div>

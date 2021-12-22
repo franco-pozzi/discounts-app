@@ -45,3 +45,14 @@ export const inputNewPurchase = (e: any) => {
         return 'inputError'
     }
 }
+
+export const inputDiscountName = (e: any) => {
+    const value: string = e.target.value
+
+    if (value.length > 0 && value.length < 30) {
+        return value
+    }
+    else {
+        return 'inputError'
+    }
+}

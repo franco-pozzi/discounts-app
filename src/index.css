@@ -20,8 +20,3 @@ code {
   box-shadow: 0 0 0 0.25rem hsl(358deg 94% 50% / 52%);
   border-color: hsl(358deg 94% 50% / 52%) ;
 }
-.input-error-secondary{
-  box-shadow: 0 0 0 0.25rem hsl(358deg 94% 50% / 52%) !important;
-  border-top-color: hsl(358deg 94% 50% / 52%) !important;
-  border-bottom-color: hsl(358deg 94% 50% / 52%) !important;
-}

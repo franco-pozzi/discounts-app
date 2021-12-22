@@ -3,7 +3,7 @@ import { useContext, useState, useEffect } from 'react'
 import ComplexInput from './ComplexInput'
 import SimpleInput from './SimpleInput'
 
-import { inputPorcentajeHandle, inputTopeReintegroHandle, inputFechaVencimientoHandle } from '../services/inputLogic'
+import { inputPorcentajeHandle, inputTopeReintegroHandle, inputFechaVencimientoHandle, inputDiscountName } from '../services/inputLogic'
 
 import { DiscountsContext } from '../context/DiscountsContext'
 
@@ -16,7 +16,7 @@ interface IState {
 }
 
 
-export default function CreadorDescuento() {
+export default function CreateDiscount() {
 
     const { globalDiscount, setGlobalDiscount, globalRefund, setGlobalRefund, createNewDiscount } = useContext(DiscountsContext)
 
@@ -36,21 +36,21 @@ export default function CreadorDescuento() {
 
 
     useEffect(() => {
-        if (!discountError && !refundError && !discountExpirationError) {
+        if (!discountError && !refundError && !discountExpirationError && !discountNameError) {
             setSubmitError(false)
         }
         else {
             setSubmitError(true)
         }
 
-    }, [discountName, globalDiscount, globalRefund, discountExpiration, discountError, refundError, discountExpirationError])
+    }, [discountExpiration, discountError, refundError, discountExpirationError, discountNameError])
 
 
     const onSubmit = (e: any) => {
 
         e.preventDefault()
 
-        if (!discountError && !refundError && !discountExpirationError) {
+        if (!discountError && !refundError && !discountExpirationError && !discountNameError) {
 
             if (discountName && globalDiscount && globalRefund && discountExpiration) {
                 setSubmitError(false)
@@ -64,19 +64,29 @@ export default function CreadorDescuento() {
                 // Calculate Maximum Spending
                 const maximumSpending = (globalRefund * (100 / globalDiscount)).toFixed(2)
 
+                //format discountExpiration
+
+                const formatDiscountExpiration = discountExpiration.split('-').reverse().join('-')
+
                 // Create single discount Object
                 const newDiscount: Object = {
                     id: discountId,
                     discountName: discountName,
                     discountAmount: globalDiscount,
                     refundAmount: globalRefund,
-                    discountExpiration: discountExpiration,
+                    discountExpiration: formatDiscountExpiration,
                     maximumSpending: maximumSpending,
                     newPurchase: [],
                     remainingAmount: maximumSpending
                 }
 
                 createNewDiscount(newDiscount)
+
+                setDiscountName(undefined)
+                setGlobalDiscount(undefined)
+                setGlobalRefund(undefined)
+                setDiscountExpiration(undefined)
+
 
                 console.log('succed')
             }
@@ -109,16 +119,18 @@ export default function CreadorDescuento() {
                     inputType='text'
                     OnChangeFunction={
                         (e: any) => {
-                            if (discountNameError) {
-                                setDiscountName(e.target.value)
-                                setDiscountNameError(false)
+                            if (inputDiscountName(e) === 'inputError') {
+                                setDiscountNameError('Ingrese un nombre de descuento valido')
+                                setDiscountName(undefined)
                             }
                             else {
-                                setDiscountName(e.target.value)
+                                setDiscountNameError(undefined)
+                                setDiscountName(inputDiscountName(e))
                             }
                         }
                     }
                     errorMessage={discountNameError}
+                    value={discountName}
                 />
 
                 <ComplexInput
@@ -132,7 +144,7 @@ export default function CreadorDescuento() {
                                 setDiscountError('El porcentaje minimo es 1 y el maximo 100')
                                 setGlobalDiscount(undefined)
                             } else {
-                                setGlobalDiscount((inputPorcentajeHandle(e)))
+                                setGlobalDiscount(inputPorcentajeHandle(e))
                                 setDiscountError(undefined)
                             }
                         }
@@ -171,13 +183,15 @@ export default function CreadorDescuento() {
                         (e: any) => {
                             if (inputFechaVencimientoHandle(e) === 'inputError') {
                                 setDiscountExpirationError('La fecha ingresada es anterior a la actual')
+                                setDiscountExpiration(e.target.value)
                             } else {
-                                setDiscountExpiration((inputFechaVencimientoHandle(e)))
+                                setDiscountExpiration(e.target.value)
                                 setDiscountExpirationError(undefined)
                             }
                         }
                     }
                     errorMessage={discountExpirationError}
+                    value={discountExpiration}
                 />
                 <div className="d-flex justify-content-center align-items-center py-3">
                     {!isSubmitError ?

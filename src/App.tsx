@@ -1,7 +1,7 @@
 import './App.css';
-import CreateForm from './components/CreateForm';
-import CreadorDescuento from './components/MisDescuentos';
-import Descuento from './components/Descuento';
+import DiscountCalculator from './components/DiscountCalculator';
+import CreateDiscount from './components/CreateDiscount';
+import Discount from './components/Discount';
 
 
 import DiscountsContextProvider from './context/DiscountsContext';
@@ -26,7 +26,7 @@ function App() {
           <p className='my-1'>Lo unico que deberas hacer es completar los campos solicitados a continuacion.</p>
         </div>
         <div className="py-2">
-          <CreateForm />
+          <DiscountCalculator />
         </div>
       </section>
 
@@ -35,8 +35,8 @@ function App() {
         <p className="my-1">
           Podras llevar la cuenta de los descuentos que estas ultilizando y maximizar tu ahorro.
         </p>
-        <CreadorDescuento />
-        <Descuento />
+        <CreateDiscount />
+        <Discount />
         
       </section>
     </DiscountsContextProvider>

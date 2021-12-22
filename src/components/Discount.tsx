@@ -9,15 +9,15 @@ import { BsTrash } from 'react-icons/bs'
 
 
 
-export default function Descuento() {
+export default function Discount() {
 
     const { allUserDiscounts, deleteDiscount, addUserPurchase, deletePurchase } = useContext(DiscountsContext)
 
-    const [purchaseValue, setPurchaseValue] = useState<number>()
+    const [purchaseValue, setPurchaseValue] = useState<number | undefined>()
 
-    const [inputError, setInputError] = useState<string | undefined>()
+    const [inputError, setInputError] = useState<any>()
 
-    const onClickButton = (discount: any): any => {
+    const onClickAddButton = (discount: any): any => {
         if (!inputError && discount) {
             if (purchaseValue) {
                 const createDate: Date = new Date()
@@ -30,6 +30,7 @@ export default function Descuento() {
 
                 addUserPurchase(discount, purchase)
                 setPurchaseValue(undefined)
+                setInputError(undefined)
             }
             else {
                 setInputError('*Deberas ingresar un valor valido*')
@@ -89,7 +90,7 @@ export default function Descuento() {
                         </li>
                         <li className='my-0 fs-6'>{purchase.day}</li>
                     </div>
-                    <div className='d-flex justify-content-end align-items-center me-2' style={{ width: '25%' }}>
+                    <div className='d-flex justify-content-end align-items-center me-2' style={{ width: '20%' }}>
                         <BsTrash onClick={() => onClickDelete(discount, purchase)} />                                           {/* Colocar confirmacion para eliminar con state */}
                     </div>
                 </div>
@@ -106,16 +107,16 @@ export default function Descuento() {
                     <button type="button" className="btn-close" aria-label="Close" onClick={() => deleteDiscount(discount)}></button>
                 </div>
 
-                <ul className='text-center my-2 fs-4'>
-                    <li >{discount.discountName}</li>
-                    <li className='my-2'>{discount.discountAmount}% de ahorro, tope de $1000</li>
-                    <li className='my-2'>vencimiento: {discount.discountExpiration}</li>
+                <ul className='text-center my-2'>
+                    <li className='fw-bold fs-3' >{discount.discountName}</li>
+                    <li className='my-2 fw-normal fs-4'>{discount.discountAmount}% de ahorro, tope de $ {discount.refundAmount}</li>
+                    <li className='my-2 fw-light fs-5'>vencimiento: {discount.discountExpiration}</li>
                 </ul>
 
                 <div className="border-top my-1"></div>
 
                 <ul className='my-2'>
-                    <li className="d-flex justify-content-between fs-5" style={{ paddingRight: '22%' }}>
+                    <li className="d-flex justify-content-between fs-5" style={PurchaseArray({ discount }).length > 0 ? { paddingRight: '18%' } : { paddingRight: 0 }} >
                         <span className='fw-bolder '>Gasto maximo </span>
                         <span className='text-end'> $ {discount.maximumSpending}</span>
                     </li>
@@ -126,44 +127,59 @@ export default function Descuento() {
                 <div className="border-top my-2"></div>
 
                 <ul className='my-2'>
-                    <li className="d-flex justify-content-between fs-5" style={{ paddingRight: '22%' }} >
-                        <span className='fw-bolder'>Restan:</span>
-                        <span className='text-end'> $ {discount.remainingAmount}</span>
+                    <li className="d-flex justify-content-between fs-5" style={PurchaseArray({ discount }).length > 0 ? { paddingRight: '18%' } : { paddingRight: 0 }} >
+                        <span className='fw-bolder'>{discount.remainingAmount > 0 ? 'Restan' : 'Excediste '}</span>
+                        <span className='text-end'> $ {discount.remainingAmount > 0 ? discount.remainingAmount : -discount.remainingAmount}</span>
                     </li>
 
                     <RemainingDays discount={discount} />
 
                 </ul>
 
-                <div className='input-group my-3 fs-5'>
-                    <span className='input-group-text col-7 px-1 justify-content-between'>
-                        <span className="text-start">Agregar compra:</span>
-                        <span className="text-end">$</span>
-                    </span>
+                <HandleUserInput discount={discount} setPurchaseValue={setPurchaseValue} onClickAddButton={onClickAddButton} />
 
-                    <input type="number"
-                        placeholder='Ej: 500'
-                        className='form-control col-2 text-center'
-                        onChange={
-                            (e: any) => {
-                                if (inputNewPurchase(e) === 'inputError') {
-                                    setPurchaseValue(e.target.value)
-                                    setInputError('La compra minima es 0 y la maxima es 100000')
-                                }
-                                else {
-                                    setPurchaseValue(e.target.value)
-                                    setInputError(undefined)
-                                }
-                            }
-                        } />
-
-                    {!inputError ?
-                        <button type="submit" className='btn btn-outline-success col-2' onClick={() => onClickButton(discount)}>+</button> :
-                        <button type="button" className='btn btn-outline-danger col-2'>Error</button>
-                    }
-                </div>
-                {inputError && <span className='col mb-2 w-100 text-center' style={{ color: 'red' }}>* {inputError} *</span>}
             </div>
         </div>
     ))
+}
+
+
+const HandleUserInput = ({ discount, setPurchaseValue, onClickAddButton }: any) => {
+
+    const [inputError, setInputError] = useState<string>()
+
+    return (
+        <>
+            <div className='input-group my-3 fs-5'>
+                <span className='input-group-text col-7 px-1 justify-content-between'>
+                    <span className="text-start fw-bolder">Agregar compra:</span>
+                    <span className="text-end">$</span>
+                </span>
+
+                <input type="number"
+                    placeholder='Ej: 500'
+                    className='form-control col-2 text-center'
+                    onChange={
+                        (e: any) => {
+                            if (inputNewPurchase(e) === 'inputError') {
+                                setPurchaseValue(e.target.value)
+                                setInputError('La compra minima es 0 y la maxima es 100000')
+                            }
+                            else {
+                                setPurchaseValue(e.target.value)
+                                setInputError(undefined)
+                            }
+                        }
+                    }
+                />
+
+                {!inputError ?
+                    <button type="submit" className='btn btn-outline-success col-2' onClick={() => onClickAddButton(discount)}>+</button> :
+                    <button type="button" className='btn btn-outline-danger col-2'>Error</button>
+                }
+            </div>
+            {inputError && <span className='col mb-2 w-100 text-center' style={{ color: 'red' }}>* {inputError} *</span>}
+        </>
+    )
+
 }

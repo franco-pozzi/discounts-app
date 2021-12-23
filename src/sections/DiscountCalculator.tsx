@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext } from 'react'
-import ComplexInput from './ComplexInput'
+import ComplexInput from '../components/ComplexInput'
 
 import { inputPorcentajeHandle, inputTopeReintegroHandle } from '../services/inputLogic'
 

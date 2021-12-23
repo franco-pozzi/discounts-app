@@ -12,11 +12,3 @@ code {
     monospace;
 }
 
-*{
-  list-style: none;
-}
-
-.input-error{
-  box-shadow: 0 0 0 0.25rem hsl(358deg 94% 50% / 52%);
-  border-color: hsl(358deg 94% 50% / 52%) ;
-}

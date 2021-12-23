@@ -1,7 +1,7 @@
 import { useContext, useState, useEffect } from 'react'
 
-import ComplexInput from './ComplexInput'
-import SimpleInput from './SimpleInput'
+import ComplexInput from '../components/ComplexInput'
+import SimpleInput from '../components/SimpleInput'
 
 import { inputPorcentajeHandle, inputTopeReintegroHandle, inputFechaVencimientoHandle, inputDiscountName } from '../services/inputLogic'
 

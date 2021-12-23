@@ -1,7 +1,7 @@
 import './App.css';
-import DiscountCalculator from './components/DiscountCalculator';
-import CreateDiscount from './components/CreateDiscount';
-import Discount from './components/Discount';
+import DiscountCalculator from './sections/DiscountCalculator';
+import CreateDiscount from './sections/CreateDiscount';
+import ListOfDiscount from './sections/ListOfDiscount';
 
 
 import DiscountsContextProvider from './context/DiscountsContext';
@@ -36,8 +36,12 @@ function App() {
           Podras llevar la cuenta de los descuentos que estas ultilizando y maximizar tu ahorro.
         </p>
         <CreateDiscount />
-        <Discount />
-        
+      </section>
+
+      <section className="container">
+        <div className="row row-cols-1 row-cols-md-2 row-cols-xl-3">
+          <ListOfDiscount />
+        </div>
       </section>
     </DiscountsContextProvider>
   );

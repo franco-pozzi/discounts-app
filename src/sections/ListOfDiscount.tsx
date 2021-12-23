@@ -109,13 +109,13 @@ const RemainingDays = ({ discount }: any) => {
 
     switch (restDates()) {
         case 1:
-            return <li className='my-0 fs-6'>1 dia restante</li>
+            return <li className='my-0 fs-6'>1 día restante</li>
 
         case 'error':
             return <li className='mt-3 fs-4 fw-bold text-center' style={{ color: '#198754' }}>Descuento Vencido</li>
 
         default:
-            return <li className='my-0 fs-6'>{restDates()} dias restantes</li>
+            return <li className='my-0 fs-6'>{restDates()} días restantes</li>
     }
 }
 
@@ -144,11 +144,11 @@ const HandleUserInput = ({ discount }: any) => {
                 setInputError(undefined)
             }
             else {
-                setInputError('*Debes ingresar un valor valido*')
+                setInputError('* Debes ingresar un valor válido')
             }
         }
         else {
-            setInputError('*Debes ingresar un valor valido*')
+            setInputError('* Debes ingresar un valor válido')
         }
     }
 

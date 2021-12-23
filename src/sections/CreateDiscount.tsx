@@ -92,7 +92,7 @@ export default function CreateDiscount() {
             }
 
             else {
-                !discountName && setDiscountNameError('Debes ingresar un nombre valido')
+                !discountName && setDiscountNameError('Debes ingresar un nombre válido')
 
                 !globalDiscount && setDiscountError('Debes ingresar el porcentaje de ahorro')
 
@@ -120,8 +120,8 @@ export default function CreateDiscount() {
                     OnChangeFunction={
                         (e: any) => {
                             if (inputDiscountName(e) === 'inputError') {
-                                setDiscountNameError('Ingrese un nombre de descuento valido')
-                                setDiscountName(undefined)
+                                setDiscountNameError('Ingrese un nombre de descuento válido, max caracteres 30')
+                                
                             }
                             else {
                                 setDiscountNameError(undefined)
@@ -141,7 +141,7 @@ export default function CreateDiscount() {
                     OnChangeFunction={
                         (e: any) => {
                             if (inputPorcentajeHandle(e) === 'inputError') {
-                                setDiscountError('El porcentaje minimo es 1 y el maximo 100')
+                                setDiscountError('El porcentaje mínimo es 1 y el máximo 100')
                                 setGlobalDiscount(undefined)
                             } else {
                                 setGlobalDiscount(inputPorcentajeHandle(e))
@@ -162,7 +162,7 @@ export default function CreateDiscount() {
                     OnChangeFunction={
                         (e: any) => {
                             if (inputTopeReintegroHandle(e) === 'inputError') {
-                                setRefundError('El tope de reintegro minimo es 0 y el maximo 10000000')
+                                setRefundError('El tope de reintegro mínimo es 0 y el máximo 10000000')
                                 setGlobalRefund(undefined)
                             } else {
                                 setGlobalRefund((inputTopeReintegroHandle(e)))

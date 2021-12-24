@@ -1,49 +1,52 @@
 import { useContext, useState } from 'react'
 
 import { DiscountsContext } from '../context/DiscountsContext'
+import { ErrorContext } from '../context/ErrorContext'
 
 import { inputNewPurchase } from '../services/inputLogic'
 
-import { BsTrash } from 'react-icons/bs'
+import { BsTrash, BsPlus} from 'react-icons/bs'
 
 
 export default function ListOfDiscount() {
 
     const { allUserDiscounts, deleteDiscount } = useContext(DiscountsContext)
+    const { setSelectedToast } = useContext(ErrorContext)
 
     const onClickDeleteDiscount = (discount: any) => {
         deleteDiscount(discount)
+        setSelectedToast('discount-deleted')
     }
 
 
     return allUserDiscounts.map((discount: any) => (
         <div className='col my-4' key={discount.id}>
-            <div className='border' style={{ maxWidth: '334px' }}>
+            <div className='discount__border' style={{ maxWidth: '334px' }}>
                 <div className='d-flex justify-content-end my-1 px-1'>
-                    <button type="button" className="btn-close" aria-label="Close" onClick={() => onClickDeleteDiscount(discount)}></button>
+                    <button type="button" className="btn-close mt-2 me-2" aria-label="Close" onClick={() => onClickDeleteDiscount(discount)}></button>
                 </div>
 
-                <ul className='text-center m-2'>
-                    <li className='fw-bold fs-3' >{discount.discountName}</li>
-                    <li className='my-2 fw-normal fs-4'>{discount.discountAmount}% de ahorro, tope de $ {discount.refundAmount}</li>
-                    <li className='my-2 fw-light fs-5'>vencimiento: {discount.discountExpiration}</li>
+                <ul className='text-center'>
+                    <li className='mb-1 fw-bold fs-3' >{discount.discountName}</li>
+                    <li className='mb-2 fw-normal fs-5'>{discount.discountAmount}% de ahorro, tope de $ {discount.refundAmount}</li>
+                    <li className='mb-2 fw-light fs-5'>vencimiento: {discount.discountExpiration}</li>
                 </ul>
 
                 <div className="border-top my-1"></div>
 
-                <ul className='m-3'>
-                    <li className="d-flex justify-content-between fs-5" style={PurchaseArray({ discount }).length > 0 ? { paddingRight: '18%' } : { paddingRight: 0 }} >
+                <ul className='my-3 ms-4'>
+                    <li className="d-flex justify-content-between fs-5" style={PurchaseArray({ discount }).length > 0 ? { paddingRight: '16%' } : { paddingRight: '10%' }} >
                         <span className='fw-bolder '>Gasto maximo </span>
                         <span className='text-end'> $ {discount.maximumSpending}</span>
                     </li>
 
-                    <PurchaseArray discount={discount} />
+                    <PurchaseArray discount={discount} setSelectedToast={setSelectedToast}/>
                 </ul>
 
                 <div className="border-top my-2"></div>
 
-                <ul className='m-3'>
-                    <li className="d-flex justify-content-between fs-5" style={PurchaseArray({ discount }).length > 0 ? { paddingRight: '18%' } : { paddingRight: 0 }} >
+                <ul className='my-3 ms-4'>
+                    <li className="d-flex justify-content-between fs-5" style={PurchaseArray({ discount }).length > 0 ? { paddingRight: '16%' } : { paddingRight: '10%' }} >
                         <span className='fw-bolder'>{discount.remainingAmount > 0 ? 'Restan' : 'Excediste '}</span>
                         <span className='text-end'> $ {discount.remainingAmount > 0 ? discount.remainingAmount : -discount.remainingAmount}</span>
                     </li>
@@ -51,24 +54,26 @@ export default function ListOfDiscount() {
                     <RemainingDays discount={discount} />
                 </ul>
 
-                <HandleUserInput discount={discount} />
+                <HandleUserInput discount={discount} setSelectedToast={setSelectedToast}/>
             </div>
         </div>
     ))
 }
 
 
-const PurchaseArray = ({ discount }: any) => {
+const PurchaseArray = ({ discount, setSelectedToast }: any) => {
 
     const { deletePurchase } = useContext(DiscountsContext)
 
     const onClickDeletePurchase = (discount: any, purchase: any) => {
         deletePurchase(discount, purchase)
+        setSelectedToast('purchase-deleted')
+
     }
 
     return discount.newPurchase.map((purchase: any) =>
         <div key={purchase.id}>
-            <div className='my-1 text-end' style={{ paddingRight: '44%' }}>-</div>
+            <div className='my-1 text-end' style={{ paddingRight: '40%' }}>-</div>
             <div className='d-flex flex-row'>
                 <div className='d-flex flex-column w-100'>
                     <li className="d-flex justify-content-between fs-5">
@@ -77,8 +82,8 @@ const PurchaseArray = ({ discount }: any) => {
                     </li>
                     <li className='my-0 fs-6'>{purchase.day}</li>
                 </div>
-                <div className='d-flex justify-content-end align-items-center me-2' style={{ width: '20%' }}>
-                    <button className='btn' onClick={() => onClickDeletePurchase(discount, purchase)} >  {/* Colocar confirmacion para eliminar con state */}
+                <div className='d-flex justify-content-end align-items-center me-1' style={{ width: '18%' }}>
+                    <button className='btn p-2' onClick={() => onClickDeletePurchase(discount, purchase)} >  {/* Colocar confirmacion para eliminar con state */}
                         <BsTrash />
                     </button>
                 </div>
@@ -120,7 +125,7 @@ const RemainingDays = ({ discount }: any) => {
 }
 
 
-const HandleUserInput = ({ discount }: any) => {
+const HandleUserInput = ({ discount, setSelectedToast }: any) => {
 
     const { addUserPurchase } = useContext(DiscountsContext)
 
@@ -142,6 +147,7 @@ const HandleUserInput = ({ discount }: any) => {
                 addUserPurchase(discount, purchase)
                 setPurchaseValue(undefined)
                 setInputError(undefined)
+                setSelectedToast('purchase-added')
             }
             else {
                 setInputError('* Debes ingresar un valor válido')
@@ -154,10 +160,10 @@ const HandleUserInput = ({ discount }: any) => {
 
     return (
         <>
-            <div className='input-group my-3 px-3 fs-5'>
-                <span className='input-group-text col-7 px-1 justify-content-between'>
-                    <span className="text-start fw-bolder">Agregar compra:</span>
-                    <span className="text-end">$</span>
+            <div className={`input-group px-2 pt-1 fs-5 ${inputError ? 'pb-0': 'pb-3'}`}>
+                <span className='input-group-text col-7 ps-2 pe-1 justify-content-between align-items-center discount__border'>
+                    <span className="text-start fw-bold" style={{fontSize:'14px'}}>AGREGAR COMPRA:</span>
+                    <span className="text-end fw-bold">$</span>
                 </span>
 
                 <input type="number"
@@ -167,7 +173,7 @@ const HandleUserInput = ({ discount }: any) => {
                         (e: any) => {
                             if (inputNewPurchase(e) === 'inputError') {
                                 setPurchaseValue(e.target.value)
-                                setInputError('La compra minima es 0 y la maxima es 100000')
+                                setInputError('La compra mínima es 0 y la máxima es 100000')
                             }
                             else {
                                 setPurchaseValue(e.target.value)
@@ -175,14 +181,15 @@ const HandleUserInput = ({ discount }: any) => {
                             }
                         }
                     }
+                    value={purchaseValue || ''}
                 />
 
                 {!inputError ?
-                    <button type="submit" className='btn btn-outline-success col-2' onClick={() => onClickAddButton(discount)}>+</button> :
-                    <button type="button" className='btn btn-outline-danger col-2'>Error</button>
+                    <button type="button" className='btn btn-outline-success col-2 discount__border' onClick={() => onClickAddButton(discount)}><BsPlus/></button> :
+                    <button type="button" className='btn btn-outline-danger col-2 discount__border'>!</button>
                 }
             </div>
-            {inputError && <div className='mb-2 px-2 text-center' style={{ color: 'red' }}> {inputError} </div>}
+            {inputError && <div className='p-1 text-center' style={{ color: 'red' }}> {inputError} </div>}
         </>
     )
 }

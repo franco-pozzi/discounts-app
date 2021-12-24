@@ -17,3 +17,15 @@ ul,li{
   margin: 0;
   padding: 0;
 }
+
+
+body{
+  background: #02d15b;
+}
+.discount__border{  
+    background-color: white;    
+    border-radius: 23px;
+    box-shadow: 0 2px 4px rgb(0 0 0 / 15%);
+    transition: .3s;
+}
+

@@ -2,16 +2,19 @@ import './App.css';
 import DiscountCalculator from './sections/DiscountCalculator';
 import CreateDiscount from './sections/CreateDiscount';
 import ListOfDiscount from './sections/ListOfDiscount';
-
+import ErrorToast from './components/ErrorToast';
 
 import DiscountsContextProvider from './context/DiscountsContext';
+import ErrorContextProvider from './context/ErrorContext';
 
 
 
 
 function App() {
+
   return (
     <DiscountsContextProvider>
+      <ErrorContextProvider>
       <section className='container my-3 py-2'>
         <div className='py-2'>
           <h1 className="text-center">Calculadora de beneficios cuenta dni</h1>
@@ -42,7 +45,9 @@ function App() {
         <div className="row row-cols-1 row-cols-md-2 row-cols-xl-3">
           <ListOfDiscount />
         </div>
-      </section>
+      </section>    
+      <ErrorToast/>
+    </ErrorContextProvider>
     </DiscountsContextProvider>
   );
 }

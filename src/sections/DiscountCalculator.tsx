@@ -44,7 +44,7 @@ export default function DiscountCalculator() {
 
     return (
         <>
-            <div className="row row-cols-1 row-cols-sm-2">
+            <div className="row row-cols-1 row-cols-sm-2 m-0">
                 <ComplexInput
                     inputId='porcentajeAhorro'
                     labelText='Porcentaje de ahorro: '
@@ -53,7 +53,7 @@ export default function DiscountCalculator() {
                     OnChangeFunction={
                         (e: any) => {
                             if (inputPorcentajeHandle(e) === 'inputError') {
-                                setDiscountError('El porcentaje minimo es 1 y el maximo 100')
+                                setDiscountError('El porcentaje mínimo es 1 y el máximo 100 ')
                                 setUserDiscount(undefined)
                             } else {
                                 setDiscountError(undefined)
@@ -74,7 +74,7 @@ export default function DiscountCalculator() {
                     OnChangeFunction={
                         (e: any) => {
                             if (inputTopeReintegroHandle(e) === 'inputError') {
-                                setRefundError('El tope de reintegro minimo es 1 y el maximo 10000000')
+                                setRefundError('El tope de reintegro mínimo es 1 y el máximo 10000000')
                                 setUserRefund(undefined)
                             } else {
                                 setRefundError(undefined)
@@ -89,10 +89,10 @@ export default function DiscountCalculator() {
                 />
             </div>
 
-            {maximumRefund && !discountError && !refundError && <p className='my-3 text-center'>¡ Podes gastar <b>$ {maximumRefund}</b> para aprovechar el total del descuento !</p>}
+            {maximumRefund && !discountError && !refundError && <p className='px-2 pt-4 m-0 text-center fs-6'>¡ Podes gastar <strong>$ {maximumRefund}</strong> para aprovechar el total del descuento !</p>}
 
-            <div className="d-flex justify-content-center align-items-center py-3">
-                <a href="#AddDiscount" className='btn btn-outline-success' onClick={addDiscountAction}>Agregar descuento</a>
+            <div className="d-flex justify-content-center align-items-center py-4">
+                <a href="#AddDiscount" className='btn btn-outline-success btn__border' onClick={addDiscountAction}>Agregar descuento</a>
             </div>
         </>
     )

@@ -6,6 +6,7 @@ import SimpleInput from '../components/SimpleInput'
 import { inputPorcentajeHandle, inputTopeReintegroHandle, inputFechaVencimientoHandle, inputDiscountName } from '../services/inputLogic'
 
 import { DiscountsContext } from '../context/DiscountsContext'
+import { ErrorContext } from '../context/ErrorContext'
 
 interface IState {
     discountName: string,
@@ -33,6 +34,8 @@ export default function CreateDiscount() {
     const [discountExpirationError, setDiscountExpirationError] = useState<IState['error']>()
 
     const [isSubmitError, setSubmitError] = useState<IState['error']>(false)
+
+    const {setSelectedToast} = useContext(ErrorContext)
 
 
     useEffect(() => {
@@ -86,6 +89,8 @@ export default function CreateDiscount() {
                 setGlobalDiscount(undefined)
                 setGlobalRefund(undefined)
                 setDiscountExpiration(undefined)
+
+                setSelectedToast('discount-added')
 
 
                 console.log('succed')

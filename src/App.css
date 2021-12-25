@@ -20,12 +20,37 @@ ul,li{
 
 
 body{
-  background: #02d15b;
-}
-.discount__border{  
-    background-color: white;    
-    border-radius: 23px;
-    box-shadow: 0 2px 4px rgb(0 0 0 / 15%);
-    transition: .3s;
+  background: #dfefdc;  
 }
 
+.discount__border, .modified__border{  
+    background-color: white;    
+    border-radius: 23px;
+    box-shadow: 0 2px 4px rgb(0 0 0 / 15%);  
+}
+
+.input__border, .btn__border{
+  border-radius: 23px;
+  box-shadow: 0 2px 4px rgb(0 0 0 / 15%);
+ transition: .3s;
+}
+
+.toast-container{
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  z-index: 4;
+}
+
+.toast-button{
+  border: none;
+}
+
+.toast-body, .toast-header{
+  color:black;
+}
+
+.error__font{
+  font-size: .9rem;
+  color: hsl(358deg 94% 50% / 52%);
+}

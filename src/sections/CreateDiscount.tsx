@@ -116,7 +116,7 @@ export default function CreateDiscount() {
 
     return (
         <>
-            <form className="row row-cols-1 row-cols-sm-2" onSubmit={onSubmit}>
+            <form className="row row-cols-1 row-cols-sm-2 m-0" onSubmit={onSubmit}>
                 <SimpleInput
                     inputId='nuevoAhorro'
                     labelText='Nombre: '
@@ -198,10 +198,10 @@ export default function CreateDiscount() {
                     errorMessage={discountExpirationError}
                     value={discountExpiration}
                 />
-                <div className="d-flex justify-content-center align-items-center py-3">
+                <div className="d-flex justify-content-center align-items-center py-4">
                     {!isSubmitError ?
-                        <input type="submit" value="Guardar descuento" className='btn btn-success my-3' /> :
-                        <input type="submit" value="Error" className='btn btn-danger my-3' />
+                        <input type="submit" value="Guardar descuento" className='btn btn-outline-success btn__border' /> :
+                        <input type="submit" value="Error" className='btn btn-danger btn__border' />
                     }
                 </div>
             </form>

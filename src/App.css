@@ -27,6 +27,7 @@ body{
     background-color: white;    
     border-radius: 23px;
     box-shadow: 0 2px 4px rgb(0 0 0 / 15%);  
+
 }
 
 .input__border, .btn__border{
@@ -53,4 +54,37 @@ body{
 .error__font{
   font-size: .9rem;
   color: hsl(358deg 94% 50% / 52%);
+}
+
+.info__home{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+
+.discount__container{
+  max-width: 334px;
+  min-width: 300px;
+}
+@media screen and (min-width: 576px){
+  .discount__container{  
+    width: 370px;
+  }
+}
+
+.purchase__container{
+  max-height: 374px;
+  overflow-y: auto;
+}
+
+@media screen and (max-width: 575px){
+  .info__home{
+    min-height: 363px;        
+    max-height: 422px;
+  }
+}  
+
+.list__discount__container{
+  display: flex;
+  gap: 3rem;
 }

@@ -35,7 +35,7 @@ export default function CreateDiscount() {
 
     const [isSubmitError, setSubmitError] = useState<IState['error']>(false)
 
-    const {setSelectedToast} = useContext(ErrorContext)
+    const { setSelectedToast } = useContext(ErrorContext)
 
 
     useEffect(() => {
@@ -93,7 +93,7 @@ export default function CreateDiscount() {
                 setSelectedToast('discount-added')
 
 
-                console.log('succed')
+                //console.log('succed')
             }
 
             else {
@@ -115,96 +115,102 @@ export default function CreateDiscount() {
     }
 
     return (
-        <>
-            <form className="row row-cols-1 row-cols-sm-2 m-0" onSubmit={onSubmit}>
-                <SimpleInput
-                    inputId='nuevoAhorro'
-                    labelText='Nombre: '
-                    placeHolder='Ej: 40 % supermercados'
-                    inputType='text'
-                    OnChangeFunction={
-                        (e: any) => {
-                            if (inputDiscountName(e) === 'inputError') {
-                                setDiscountNameError('Ingrese un nombre de descuento válido, max caracteres 30')
-                                
-                            }
-                            else {
-                                setDiscountNameError(undefined)
-                                setDiscountName(inputDiscountName(e))
-                            }
-                        }
-                    }
-                    errorMessage={discountNameError}
-                    value={discountName}
-                />
+        <section className="col-12 col-md-10 col-lg-10 col-xl-5 order-xl-1  p-3">
+            <div className='modified__border my-4 px-2'>
+                <h3 className="pt-4 pb-2 text-center fw-bold fs-3 m-0">Mis descuentos</h3>
+                <p className='px-2 pt-2 m-0 fs-6'>
+                    Podrás llevar la cuenta de los descuentos que estás utilizando y maximizar tu ahorro.
+                </p>
+                <form className="row row-cols-1 row-cols-sm-2 m-0" onSubmit={onSubmit}>
+                    <SimpleInput
+                        inputId='nuevoAhorro'
+                        labelText='Nombre: '
+                        placeHolder='Ej: 40 % supermercados'
+                        inputType='text'
+                        OnChangeFunction={
+                            (e: any) => {
+                                if (inputDiscountName(e) === 'inputError') {
+                                    setDiscountNameError('Ingrese un nombre de descuento válido, max caracteres 30')
 
-                <ComplexInput
-                    inputId='newPorcentajeAhorro'
-                    labelText='Porcentaje de ahorro: '
-                    placeHolder='Ej: 15'
-                    inputType='number'
-                    OnChangeFunction={
-                        (e: any) => {
-                            if (inputPorcentajeHandle(e) === 'inputError') {
-                                setDiscountError('El porcentaje mínimo es 1 y el máximo 100')
-                                setGlobalDiscount(undefined)
-                            } else {
-                                setGlobalDiscount(inputPorcentajeHandle(e))
-                                setDiscountError(undefined)
+                                }
+                                else {
+                                    setDiscountNameError(undefined)
+                                    setDiscountName(inputDiscountName(e))
+                                }
                             }
                         }
-                    }
-                    inputText='%'
-                    errorMessage={discountError}
-                    value={globalDiscount}
-                />
+                        errorMessage={discountNameError}
+                        value={discountName}
+                    />
 
-                <ComplexInput
-                    inputId='newTopeAhorro'
-                    labelText='Tope de reintegro: '
-                    placeHolder='Ej: 1000'
-                    inputType='number'
-                    OnChangeFunction={
-                        (e: any) => {
-                            if (inputTopeReintegroHandle(e) === 'inputError') {
-                                setRefundError('El tope de reintegro mínimo es 0 y el máximo 10000000')
-                                setGlobalRefund(undefined)
-                            } else {
-                                setGlobalRefund((inputTopeReintegroHandle(e)))
-                                setRefundError(undefined)
+                    <ComplexInput
+                        inputId='newPorcentajeAhorro'
+                        labelText='Porcentaje de ahorro: '
+                        placeHolder='Ej: 15'
+                        inputType='number'
+                        OnChangeFunction={
+                            (e: any) => {
+                                if (inputPorcentajeHandle(e) === 'inputError') {
+                                    setDiscountError('El porcentaje mínimo es 1 y el máximo 100')
+                                    setGlobalDiscount(undefined)
+                                } else {
+                                    setGlobalDiscount(inputPorcentajeHandle(e))
+                                    setDiscountError(undefined)
+                                }
                             }
                         }
-                    }
-                    inputText='$'
-                    errorMessage={refundError}
-                    value={globalRefund}
-                />
+                        inputText='%'
+                        errorMessage={discountError}
+                        value={globalDiscount}
+                    />
 
-                <SimpleInput
-                    inputId='nuevoVencimiento'
-                    labelText='Vencimiento: '
-                    inputType='date'
-                    OnChangeFunction={
-                        (e: any) => {
-                            if (inputFechaVencimientoHandle(e) === 'inputError') {
-                                setDiscountExpirationError('La fecha ingresada es anterior a la actual')
-                                setDiscountExpiration(e.target.value)
-                            } else {
-                                setDiscountExpiration(e.target.value)
-                                setDiscountExpirationError(undefined)
+                    <ComplexInput
+                        inputId='newTopeAhorro'
+                        labelText='Tope de reintegro: '
+                        placeHolder='Ej: 1000'
+                        inputType='number'
+                        OnChangeFunction={
+                            (e: any) => {
+                                if (inputTopeReintegroHandle(e) === 'inputError') {
+                                    setRefundError('El tope de reintegro mínimo es 0 y el máximo 10000000')
+                                    setGlobalRefund(undefined)
+                                } else {
+                                    setGlobalRefund((inputTopeReintegroHandle(e)))
+                                    setRefundError(undefined)
+                                }
                             }
                         }
-                    }
-                    errorMessage={discountExpirationError}
-                    value={discountExpiration}
-                />
-                <div className="d-flex justify-content-center align-items-center py-4">
-                    {!isSubmitError ?
-                        <input type="submit" value="Guardar descuento" className='btn btn-outline-success btn__border' /> :
-                        <input type="submit" value="Error" className='btn btn-danger btn__border' />
-                    }
-                </div>
-            </form>
-        </>
+                        inputText='$'
+                        errorMessage={refundError}
+                        value={globalRefund}
+                    />
+
+                    <SimpleInput
+                        inputId='nuevoVencimiento'
+                        labelText='Vencimiento: '
+                        inputType='date'
+                        OnChangeFunction={
+                            (e: any) => {
+                                if (inputFechaVencimientoHandle(e) === 'inputError') {
+                                    setDiscountExpirationError('La fecha ingresada es anterior a la actual')
+                                    setDiscountExpiration(e.target.value)
+                                } else {
+                                    setDiscountExpiration(e.target.value)
+                                    setDiscountExpirationError(undefined)
+                                }
+                            }
+                        }
+                        errorMessage={discountExpirationError}
+                        value={discountExpiration}
+                    />
+                    <div className="d-flex justify-content-center align-items-center py-4 w-100">
+                        {!isSubmitError ?
+                            <input type="submit" value="Guardar descuento" className='btn btn-outline-success btn__border' /> :
+                            <input type="submit" value="Error" className='btn btn-danger btn__border' />
+                        }
+                    </div>
+                </form>
+            </div>
+        </section>
     )
 }

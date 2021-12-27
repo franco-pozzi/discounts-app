@@ -9,13 +9,9 @@ export default function ComplexInput({ inputId, labelText, placeHolder, inputTyp
                     <input className={`form-control text-center ${errorMessage && 'input-error'}`}  id={inputId} placeholder={placeHolder} type={inputType} onChange={OnChangeFunction} value={value || ''}/>
                     
                     {inputText === '%' && <span className='input-group-text bg-light'>{inputText}</span>}                    
-                </div>
-                
-                {errorMessage && <div className='mt-2 fw-light text-center error__font' style={{ color: 'red' }}>* {errorMessage}</div>}
-                
+                </div>                
             </div>
-
-            
+            {errorMessage && <div className='mt-2 fw-light text-center error__font w-100' style={{ color: 'red' }}>* {errorMessage}</div>}            
         </>
     )
 }

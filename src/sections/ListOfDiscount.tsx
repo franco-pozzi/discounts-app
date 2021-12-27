@@ -5,8 +5,9 @@ import { ErrorContext } from '../context/ErrorContext'
 
 import { inputNewPurchase } from '../services/inputLogic'
 
-import { BsTrash, BsPlus} from 'react-icons/bs'
+import { BsTrash, BsPlus } from 'react-icons/bs'
 
+import ScrollContainer from 'react-indiana-drag-scroll'
 
 export default function ListOfDiscount() {
 
@@ -19,45 +20,54 @@ export default function ListOfDiscount() {
     }
 
 
-    return allUserDiscounts.map((discount: any) => (
-        <div className='col my-4' key={discount.id}>
-            <div className='discount__border' style={{ maxWidth: '334px' }}>
-                <div className='d-flex justify-content-end my-1 px-1'>
-                    <button type="button" className="btn-close mt-2 me-2" aria-label="Close" onClick={() => onClickDeleteDiscount(discount)}></button>
-                </div>
+    return (
+        <>  
+        <ScrollContainer className="scroll-container" ignoreElements={'.input-group'}>       
+            <div className="m-0 list__discount__container">           
+                {allUserDiscounts.map((discount: any) => (
+                    <div className=' my-4 d-flex justify-content-center align-items-center' key={discount.id}>
 
-                <ul className='text-center'>
-                    <li className='mb-1 fw-bold fs-3' >{discount.discountName}</li>
-                    <li className='mb-2 fw-normal fs-5'>{discount.discountAmount}% de ahorro, tope de $ {discount.refundAmount}</li>
-                    <li className='mb-2 fw-light fs-5'>vencimiento: {discount.discountExpiration}</li>
-                </ul>
+                        <div className='discount__border discount__container'>
+                            <div className='d-flex justify-content-end my-1 px-1'>
+                                <button type="button" className="btn-close mt-2 me-2" aria-label="Close" onClick={() => onClickDeleteDiscount(discount)}></button>
+                            </div>
 
-                <div className="border-top my-1"></div>
+                            <ul className='text-center'>
+                                <li className='mb-1 fw-bold fs-3' >{discount.discountName}</li>
+                                <li className='mb-2 fw-normal fs-5'>{discount.discountAmount}% de ahorro, tope de $ {discount.refundAmount}</li>
+                                <li className='mb-2 fw-light fs-5'>vencimiento: {discount.discountExpiration}</li>
+                            </ul>
 
-                <ul className='my-3 ms-4'>
-                    <li className="d-flex justify-content-between fs-5" style={PurchaseArray({ discount }).length > 0 ? { paddingRight: '16%' } : { paddingRight: '10%' }} >
-                        <span className='fw-bolder '>Gasto maximo </span>
-                        <span className='text-end'> $ {discount.maximumSpending}</span>
-                    </li>
+                            <div className="border-top my-1"></div>
 
-                    <PurchaseArray discount={discount} setSelectedToast={setSelectedToast}/>
-                </ul>
+                            <ul className='my-3 ms-4 purchase__container'>
+                                <li className="d-flex justify-content-between fs-5" style={PurchaseArray({ discount }).length > 0 ? { paddingRight: '16%' } : { paddingRight: '10%' }} >
+                                    <span className='fw-bolder '>Gasto maximo </span>
+                                    <span className='text-end'> $ {discount.maximumSpending}</span>
+                                </li>
 
-                <div className="border-top my-2"></div>
+                                <PurchaseArray discount={discount} setSelectedToast={setSelectedToast} />
+                            </ul>
 
-                <ul className='my-3 ms-4'>
-                    <li className="d-flex justify-content-between fs-5" style={PurchaseArray({ discount }).length > 0 ? { paddingRight: '16%' } : { paddingRight: '10%' }} >
-                        <span className='fw-bolder'>{discount.remainingAmount > 0 ? 'Restan' : 'Excediste '}</span>
-                        <span className='text-end'> $ {discount.remainingAmount > 0 ? discount.remainingAmount : -discount.remainingAmount}</span>
-                    </li>
+                            <div className="border-top my-2"></div>
 
-                    <RemainingDays discount={discount} />
-                </ul>
+                            <ul className='my-3 ms-4'>
+                                <li className="d-flex justify-content-between fs-5" style={PurchaseArray({ discount }).length > 0 ? { paddingRight: '16%' } : { paddingRight: '10%' }} >
+                                    <span className='fw-bolder'>{discount.remainingAmount > 0 ? 'Restan' : 'Excediste '}</span>
+                                    <span className='text-end'> $ {discount.remainingAmount > 0 ? discount.remainingAmount : -discount.remainingAmount}</span>
+                                </li>
 
-                <HandleUserInput discount={discount} setSelectedToast={setSelectedToast}/>
-            </div>
-        </div>
-    ))
+                                <RemainingDays discount={discount} />
+                            </ul>
+
+                            <HandleUserInput discount={discount} setSelectedToast={setSelectedToast} />
+                        </div>
+                    </div>
+                ))}               
+            </div>   
+            </ScrollContainer>          
+        </>
+    )
 }
 
 
@@ -160,9 +170,9 @@ const HandleUserInput = ({ discount, setSelectedToast }: any) => {
 
     return (
         <>
-            <div className={`input-group px-2 pt-1 fs-5 ${inputError ? 'pb-0': 'pb-3'}`}>
+            <div className={`input-group px-sm-2 pt-1 fs-5 ${inputError ? 'pb-0' : 'pb-3'}`}>
                 <span className='input-group-text col-7 ps-2 pe-1 justify-content-between align-items-center discount__border'>
-                    <span className="text-start fw-bold" style={{fontSize:'14px'}}>AGREGAR COMPRA:</span>
+                    <span className="text-start fw-bold" style={{ fontSize: '14px' }}>AGREGAR COMPRA:</span>
                     <span className="text-end fw-bold">$</span>
                 </span>
 
@@ -185,7 +195,7 @@ const HandleUserInput = ({ discount, setSelectedToast }: any) => {
                 />
 
                 {!inputError ?
-                    <button type="button" className='btn btn-outline-success col-2 discount__border' onClick={() => onClickAddButton(discount)}><BsPlus/></button> :
+                    <button type="button" className='btn btn-outline-success col-2 discount__border' onClick={() => onClickAddButton(discount)}><BsPlus /></button> :
                     <button type="button" className='btn btn-outline-danger col-2 discount__border'>!</button>
                 }
             </div>

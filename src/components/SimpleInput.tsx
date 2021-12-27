@@ -7,7 +7,7 @@ export default function SimpleInput({ inputId, labelText, placeHolder, inputType
                     <input className={`form-control text-center ${errorMessage && 'input-error'}`} id={inputId} placeholder={placeHolder} type={inputType} onChange={OnChangeFunction} value={value || ''} />
                 </div>
             </div>
-            {errorMessage && <div className='mt-2 fw-light text-center error__font' style={{ color: 'red' }}>* {errorMessage}</div>}
+            {errorMessage && <div className='mt-2 fw-light text-center error__font w-100' style={{ color: 'red' }}>* {errorMessage}</div>}
         </>
     )
 }

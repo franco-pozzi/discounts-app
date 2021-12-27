@@ -20,9 +20,9 @@ export default function DiscountCalculator() {
 
     const [userRefund, setUserRefund] = useState<IState['userRefund']>()
 
-    const [discountError, setDiscountError] = useState<IState['error']>()
+    const [discountCalculatorError, setDiscountCalculatorError] = useState<IState['error']>()
 
-    const [refundError, setRefundError] = useState<IState['error']>()
+    const [calculatorRefundError, setCalculatorRefundError] = useState<IState['error']>()
 
 
     useEffect(() => {
@@ -36,22 +36,22 @@ export default function DiscountCalculator() {
 
 
     const addDiscountAction = () => {
-        if (!discountError && !refundError) {
+        if (!discountCalculatorError && !calculatorRefundError) {
             if (userDiscount && userRefund) {
                 setGlobalDiscount(userDiscount)
                 setGlobalRefund(userRefund)
             }
             if (!userDiscount) {
-                setDiscountError('Debes ingresar el porcentaje de ahorro')
+                setDiscountCalculatorError('Debes ingresar el porcentaje de ahorro')
             }
             if (!userRefund) {
-                setRefundError('Debes ingresar el tope de reintegro')
+                setCalculatorRefundError('Debes ingresar el tope de reintegro')
             }
         }
     }
 
     return (
-        <section className='container p-3'>
+        <section className='col-12 col-md-10 col-lg-6 col-xl-4 order-xl-2 p-3'>
             <div className='modified__border my-4 px-2'>
                 <h2 className='pt-4 pb-2 text-center fw-bold fs-3 m-0'>Calculadora de descuentos</h2>
                 <p className='px-2 pt-2 m-0 fs-6'>Completa los siguientes campos y sabé cuánto puedes gastar.</p>
@@ -65,16 +65,16 @@ export default function DiscountCalculator() {
                         OnChangeFunction={
                             (e: any) => {
                                 if (inputPorcentajeHandle(e) === 'inputError') {
-                                    setDiscountError('El porcentaje mínimo es 1 y el máximo 100')
+                                    setDiscountCalculatorError('El porcentaje mínimo es 1 y el máximo 100')
                                     setUserDiscount(undefined)
                                 } else {
-                                    setDiscountError(undefined)
+                                    setDiscountCalculatorError(undefined)
                                     setUserDiscount(inputPorcentajeHandle(e))
                                 }
                             }
                         }
                         inputText='%'
-                        errorMessage={discountError}
+                        errorMessage={discountCalculatorError}
                         value={userDiscount ? userDiscount : ''}
                     />
 
@@ -86,28 +86,27 @@ export default function DiscountCalculator() {
                         OnChangeFunction={
                             (e: any) => {
                                 if (inputTopeReintegroHandle(e) === 'inputError') {
-                                    setRefundError('El tope de reintegro mínimo es 1 y el máximo 10000000')
+                                    setCalculatorRefundError('El tope de reintegro mínimo es 1 y el máximo 10000000')
                                     setUserRefund(undefined)
                                 } else {
-                                    setRefundError(undefined)
+                                    setCalculatorRefundError(undefined)
                                     setUserRefund(inputTopeReintegroHandle(e))
                                 }
                             }
                         }
                         inputText='$'
-                        errorMessage={refundError}
+                        errorMessage={calculatorRefundError}
                         value={userRefund}
 
                     />
                 </div>
 
-                {maximumRefund && !discountError && !refundError && <p className='px-2 pt-4 m-0 text-center fs-6'>¡ Podes gastar <strong>$ {maximumRefund}</strong> para aprovechar el total del descuento !</p>}
+                {maximumRefund && !discountCalculatorError && !calculatorRefundError && <p className='px-2 pt-4 m-0 text-center fs-6'>¡ Podes gastar <strong>$ {maximumRefund}</strong> para aprovechar el total del descuento !</p>}
 
                 <div className="d-flex justify-content-center align-items-center py-4">
-                    {discountError || refundError ?
+                    {discountCalculatorError || calculatorRefundError ?
                         <button type="submit" className='btn btn-danger btn__border'> Error </button> :
                         <button className='btn btn-outline-success btn__border' onClick={addDiscountAction}>Agregar descuento</button>}
-
                 </div>
             </div>
         </section>

@@ -1,12 +1,12 @@
 import { useContext, useState, useEffect } from 'react'
 
-import ComplexInput from '../components/ComplexInput'
-import SimpleInput from '../components/SimpleInput'
+import ComplexInput from '../../../components/ComplexInput'
+import SimpleInput from '../../../components/SimpleInput'
 
-import { inputPorcentajeHandle, inputTopeReintegroHandle, inputFechaVencimientoHandle, inputDiscountName } from '../services/inputLogic'
+import { inputPorcentajeHandle, inputTopeReintegroHandle, inputFechaVencimientoHandle, inputDiscountName } from '../../../services/inputLogic'
 
-import { DiscountsContext } from '../context/DiscountsContext'
-import { ErrorContext } from '../context/ErrorContext'
+import { DiscountsContext } from '../../../context/DiscountsContext'
+import { ErrorContext } from '../../../context/ErrorContext'
 
 interface IState {
     discountName: string,
@@ -19,7 +19,7 @@ interface IState {
 
 export default function CreateDiscount() {
 
-    const { globalDiscount, setGlobalDiscount, globalRefund, setGlobalRefund, createNewDiscount } = useContext(DiscountsContext)
+    const { globalDiscount, setGlobalDiscount, globalRefund, setGlobalRefund, createNewDiscount, allUserDiscounts } = useContext(DiscountsContext)
 
     const [discountName, setDiscountName] = useState<IState['discountName']>()
 
@@ -115,7 +115,7 @@ export default function CreateDiscount() {
     }
 
     return (
-        <section className="col-12 col-md-10 col-lg-10 col-xl-5 order-xl-1  p-3">
+        <section className={`col-12 col-md-10 col-lg-10 p-3 ${allUserDiscounts.length > 0 && 'col-xl-5 order-xl-1'}  `}>
             <div className='modified__border my-4 px-2'>
                 <h3 className="pt-4 pb-2 text-center fw-bold fs-3 m-0">Mis descuentos</h3>
                 <p className='px-2 pt-2 m-0 fs-6'>

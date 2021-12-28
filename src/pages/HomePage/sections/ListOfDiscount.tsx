@@ -1,9 +1,9 @@
 import { useContext, useState, useEffect } from 'react'
 
-import { DiscountsContext } from '../context/DiscountsContext'
-import { ErrorContext } from '../context/ErrorContext'
+import { DiscountsContext } from '../../../context/DiscountsContext'
+import { ErrorContext } from '../../../context/ErrorContext'
 
-import { inputNewPurchase } from '../services/inputLogic'
+import { inputNewPurchase } from '../../../services/inputLogic'
 
 import { BsTrash, BsPlus } from 'react-icons/bs'
 
@@ -11,84 +11,94 @@ import ScrollContainer from 'react-indiana-drag-scroll'
 
 export default function ListOfDiscount() {
 
+    const initialWidth = window.matchMedia("(min-width: 768px)").matches
+
+    const [isMobile, setIsMobile] = useState<any>(!initialWidth)
+
+    useEffect(() => {
+        const handler = (e: any) => (
+            e.matches ? setIsMobile(false) : setIsMobile(true)                     //Observer de media query
+        )
+        window.matchMedia("(min-width: 768px)").addEventListener('change', handler);
+    })
+
+    switch (isMobile) {
+        case true:
+            return (
+                <>
+                    <DiscountArray isMobile={isMobile} />
+                </>
+            );
+
+        case false:
+            return (
+                <>
+                    <ScrollContainer className="scroll-container" hideScrollbars={false} ignoreElements={'.input-group, .purchase__container'}>
+                        <DiscountArray isMobile={isMobile} />
+                    </ScrollContainer>
+                </>
+            )
+        default:
+            return <></>
+    }
+}
+
+
+const DiscountArray = ({ isMobile }: any) => {
+
     const { allUserDiscounts, deleteDiscount } = useContext(DiscountsContext)
 
     const { setSelectedToast } = useContext(ErrorContext)
-
-    const [isMobile, setIsMobile] = useState()
 
     const onClickDeleteDiscount = (discount: any) => {
         deleteDiscount(discount)
         setSelectedToast('discount-deleted')
     }
 
-
-    useEffect(() => {
-        // if (window.matchMedia("(min-width: 768px)").matches) {
-        //     /* La pantalla tiene al menos 400 píxeles de ancho */
-        //     console.log('ismobile')
-
-        //   } else {
-        //     /* La pantalla tiene menos de 400 píxeles de ancho */
-        //     console.log('isNotmobile')
-        //   }
-        const handler = (e: any) => console.log(e);
-        window.matchMedia("(min-width: 768px)").addEventListener('change', handler);
-    })
-
-
-
-
     return (
-        <>
-            <ScrollContainer className="scroll-container" hideScrollbars={false} ignoreElements={'.input-group, .purchase__container'}>
-                <div className="m-0 list__discount__container">
-                    {allUserDiscounts.map((discount: any) => (
-                        <div className=' my-4 d-flex justify-content-center align-items-center' key={discount.id}>
+        <div className={`m-0 ${isMobile ? 'row row-cols-1' : 'list__discount__container'} ${allUserDiscounts.length < 3 && 'justify-content-center'}`}>
+            {allUserDiscounts.map((discount: any) => (
+                <div className={` my-4 ${isMobile && 'col'} d-flex justify-content-center align-items-center `} key={discount.id}>
 
-                            <div className='discount__border discount__container'>
-                                <div className='d-flex justify-content-end my-1 px-1'>
-                                    <button type="button" className="btn-close mt-2 me-2" aria-label="Close" onClick={() => onClickDeleteDiscount(discount)}></button>
-                                </div>
-
-                                <ul className='text-center'>
-                                    <li className='mb-1 fw-bold fs-3' >{discount.discountName}</li>
-                                    <li className='mb-2 fw-normal fs-5'>{discount.discountAmount}% de ahorro, tope de $ {discount.refundAmount}</li>
-                                    <li className='mb-2 fw-light fs-5'>vencimiento: {discount.discountExpiration}</li>
-                                </ul>
-
-                                <div className="border-top my-1"></div>
-
-                                <ul className='my-3 ms-4 purchase__container'>
-                                    <li className="d-flex justify-content-between fs-5" style={PurchaseArray({ discount }).length > 0 ? { paddingRight: '16%' } : { paddingRight: '10%' }} >
-                                        <span className='fw-bolder '>Gasto maximo </span>
-                                        <span className='text-end'> $ {discount.maximumSpending}</span>
-                                    </li>
-
-                                    <PurchaseArray discount={discount} setSelectedToast={setSelectedToast} />
-                                </ul>
-
-                                <div className="border-top my-2"></div>
-
-                                <ul className='my-3 ms-4'>
-                                    <li className="d-flex justify-content-between fs-5" style={PurchaseArray({ discount }).length > 0 ? { paddingRight: '16%' } : { paddingRight: '10%' }} >
-                                        <span className='fw-bolder'>{discount.remainingAmount > 0 ? 'Restan' : 'Excediste '}</span>
-                                        <span className='text-end'> $ {discount.remainingAmount > 0 ? discount.remainingAmount : -discount.remainingAmount}</span>
-                                    </li>
-
-                                    <RemainingDays discount={discount} />
-                                </ul>
-
-                                <HandleUserInput discount={discount} setSelectedToast={setSelectedToast} />
-                            </div>
+                    <div className='discount__border discount__container'>
+                        <div className='d-flex justify-content-end my-1 px-1'>
+                            <button type="button" className="btn-close mt-2 me-2" aria-label="Close" onClick={() => onClickDeleteDiscount(discount)}></button>
                         </div>
-                    ))}
-                </div>
-            </ScrollContainer>
-        </>
-    )
-}
 
+                        <ul className='text-center'>
+                            <li className='mb-1 fw-bold fs-3' >{discount.discountName}</li>
+                            <li className='mb-2 fw-normal fs-5'>{discount.discountAmount}% de ahorro, tope de $ {discount.refundAmount}</li>
+                            <li className='mb-2 fw-light fs-5'>vencimiento: {discount.discountExpiration}</li>
+                        </ul>
+
+                        <div className="border-top my-1"></div>
+
+                        <ul className='my-3 ms-4 purchase__container'>
+                            <li className="d-flex justify-content-between fs-5" style={PurchaseArray({ discount }).length > 0 ? { paddingRight: '16%' } : { paddingRight: '10%' }} >
+                                <span className='fw-bolder '>Gasto maximo </span>
+                                <span className='text-end'> $ {discount.maximumSpending}</span>
+                            </li>
+
+                            <PurchaseArray discount={discount} setSelectedToast={setSelectedToast} />
+                        </ul>
+
+                        <div className="border-top my-2"></div>
+
+                        <ul className='my-3 ms-4'>
+                            <li className="d-flex justify-content-between fs-5" style={PurchaseArray({ discount }).length > 0 ? { paddingRight: '16%' } : { paddingRight: '10%' }} >
+                                <span className='fw-bolder'>{discount.remainingAmount > 0 ? 'Restan' : 'Excediste '}</span>
+                                <span className='text-end'> $ {discount.remainingAmount > 0 ? discount.remainingAmount : -discount.remainingAmount}</span>
+                            </li>
+
+                            <RemainingDays discount={discount} />
+                        </ul>
+
+                        <HandleUserInput discount={discount} setSelectedToast={setSelectedToast} />
+                    </div>
+                </div>
+            ))}
+        </div>)
+}
 
 const PurchaseArray = ({ discount, setSelectedToast }: any) => {
 

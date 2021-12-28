@@ -1,9 +1,9 @@
 import { useState, useEffect, useContext } from 'react'
-import ComplexInput from '../components/ComplexInput'
+import ComplexInput from '../../../components/ComplexInput'
 
-import { inputPorcentajeHandle, inputTopeReintegroHandle } from '../services/inputLogic'
+import { inputPorcentajeHandle, inputTopeReintegroHandle } from '../../../services/inputLogic'
 
-import { DiscountsContext } from '../context/DiscountsContext'
+import { DiscountsContext } from '../../../context/DiscountsContext'
 
 interface IState {
     maximumRefund: string,
@@ -32,7 +32,7 @@ export default function DiscountCalculator() {
         }
     }, [userDiscount, userRefund])
 
-    const { setGlobalDiscount, setGlobalRefund } = useContext(DiscountsContext)
+    const { setGlobalDiscount, setGlobalRefund, allUserDiscounts } = useContext(DiscountsContext)
 
 
     const addDiscountAction = () => {
@@ -51,7 +51,7 @@ export default function DiscountCalculator() {
     }
 
     return (
-        <section className='col-12 col-md-10 col-lg-6 col-xl-4 order-xl-2 p-3'>
+        <section className={`col-12 col-md-10 col-lg-6 p-3 ${allUserDiscounts.length > 0 && 'col-xl-4 order-xl-2'}`}>
             <div className='modified__border my-4 px-2'>
                 <h2 className='pt-4 pb-2 text-center fw-bold fs-3 m-0'>Calculadora de descuentos</h2>
                 <p className='px-2 pt-2 m-0 fs-6'>Completa los siguientes campos y sabé cuánto puedes gastar.</p>

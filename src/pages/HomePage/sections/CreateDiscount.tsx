@@ -116,9 +116,9 @@ export default function CreateDiscount() {
 
     return (
         <section className={`col-12 col-md-10 col-lg-10 p-3 ${allUserDiscounts.length > 0 && 'col-xl-5 order-xl-1 '}  `}>
-            <div className='modified__border my-4 px-2'>
-                <h3 className="pt-4 pb-2 text-center m-0">Mis descuentos</h3>
-                <p className='px-2 pt-2 m-0 create__paragraph'>
+            <div className='modified__border my-4 px-2 create__discount'>
+                <h2 className="pt-4 pb-2 text-center m-0">Mis descuentos</h2>
+                <p className='px-3 pt-2 m-0 create__paragraph'>
                     Podrás llevar la cuenta de los descuentos que estás utilizando y maximizar tu ahorro.
                 </p>
                 <form className="row row-cols-1 row-cols-sm-2 m-0" onSubmit={onSubmit}>
@@ -200,7 +200,7 @@ export default function CreateDiscount() {
                         errorMessage={discountExpirationError}
                         value={discountExpiration}
                     />
-                    <div className="d-flex justify-content-center align-items-center py-4 w-100">
+                    <div className="d-flex justify-content-center align-items-center py-3 w-100">
                         {!isSubmitError ?
                             <input type="submit" value="Guardar descuento" className='btn btn-outline-success btn__border create__button' /> :
                             <input type="submit" value="Error" className='btn btn-danger btn__border create__button' />

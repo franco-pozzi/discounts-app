@@ -51,62 +51,63 @@ export default function DiscountCalculator() {
     }
 
     return (
-        <section className={`col-12 col-md-10 col-lg-6 p-3 ${allUserDiscounts.length > 0 && 'col-xl-4 order-xl-2'}`}>
+        <section className={`col-12 col-md-10 col-lg-6 p-3 ${allUserDiscounts.length > 0 && 'col-xl-4 order-xl-2 '}`}>
             <div className='modified__border my-4 px-2'>
-                <h2 className='pt-4 pb-2 text-center fw-bold fs-3 m-0'>Calculadora de descuentos</h2>
-                <p className='px-2 pt-2 m-0 fs-6'>Completa los siguientes campos y sabé cuánto puedes gastar.</p>
+                <h2 className='pt-4 pb-2 text-center m-0'>Calculadora de descuentos</h2>
+                <p className='px-2 pt-2 m-0 calculator__paragraph'>Completa los siguientes campos y sabé cuánto puedes gastar.</p>
 
-                <div className="row row-cols-1 row-cols-sm-2 m-0">
-                    <ComplexInput
-                        inputId='porcentajeAhorro'
-                        labelText='Porcentaje de ahorro: '
-                        placeHolder='Ej: 15'
-                        inputType='number'
-                        OnChangeFunction={
-                            (e: any) => {
-                                if (inputPorcentajeHandle(e) === 'inputError') {
-                                    setDiscountCalculatorError('El porcentaje mínimo es 1 y el máximo 100')
-                                    setUserDiscount(undefined)
-                                } else {
-                                    setDiscountCalculatorError(undefined)
-                                    setUserDiscount(inputPorcentajeHandle(e))
+                <div className="container px-2">
+                    <div className="row row-cols-1 row-cols-sm-2 row-cols-xl-1">
+                        <ComplexInput
+                            inputId='porcentajeAhorro'
+                            labelText='Porcentaje de ahorro: '
+                            inputType='number'
+                            OnChangeFunction={
+                                (e: any) => {
+                                    if (inputPorcentajeHandle(e) === 'inputError') {
+                                        setDiscountCalculatorError('El porcentaje mínimo es 1 y el máximo 100')
+                                        setUserDiscount(undefined)
+                                    } else {
+                                        setDiscountCalculatorError(undefined)
+                                        setUserDiscount(inputPorcentajeHandle(e))
+                                    }
                                 }
                             }
-                        }
-                        inputText='%'
-                        errorMessage={discountCalculatorError}
-                        value={userDiscount ? userDiscount : ''}
-                    />
+                            inputText='%'
+                            errorMessage={discountCalculatorError}
+                            value={userDiscount ? userDiscount : ''}
+                        />
 
-                    <ComplexInput
-                        inputId='topeReintegro'
-                        labelText='Tope de reintegro: '
-                        placeHolder='Ej: 1000'
-                        inputType='number'
-                        OnChangeFunction={
-                            (e: any) => {
-                                if (inputTopeReintegroHandle(e) === 'inputError') {
-                                    setCalculatorRefundError('El tope de reintegro mínimo es 1 y el máximo 10000000')
-                                    setUserRefund(undefined)
-                                } else {
-                                    setCalculatorRefundError(undefined)
-                                    setUserRefund(inputTopeReintegroHandle(e))
+                        <ComplexInput
+                            inputId='topeReintegro'
+                            labelText='Tope de reintegro: '
+                            inputType='number'
+                            OnChangeFunction={
+                                (e: any) => {
+                                    if (inputTopeReintegroHandle(e) === 'inputError') {
+                                        setCalculatorRefundError('El tope de reintegro mínimo es 1 y el máximo 10000000')
+                                        setUserRefund(undefined)
+                                    } else {
+                                        setCalculatorRefundError(undefined)
+                                        setUserRefund(inputTopeReintegroHandle(e))
+                                    }
                                 }
                             }
-                        }
-                        inputText='$'
-                        errorMessage={calculatorRefundError}
-                        value={userRefund}
+                            inputText='$'
+                            errorMessage={calculatorRefundError}
+                            value={userRefund}
 
-                    />
+                        />
+                    </div>
                 </div>
 
-                {maximumRefund && !discountCalculatorError && !calculatorRefundError && <p className='px-2 pt-4 m-0 text-center fs-6'>¡ Podes gastar <strong>$ {maximumRefund}</strong> para aprovechar el total del descuento !</p>}
+
+                {maximumRefund && !discountCalculatorError && !calculatorRefundError && <p className='px-2 pt-4 m-0 text-center'>¡ Podes gastar <strong>$ {maximumRefund}</strong> para aprovechar el total del descuento !</p>}
 
                 <div className="d-flex justify-content-center align-items-center py-4">
                     {discountCalculatorError || calculatorRefundError ?
-                        <button type="submit" className='btn btn-danger btn__border'> Error </button> :
-                        <button className='btn btn-outline-success btn__border' onClick={addDiscountAction}>Agregar descuento</button>}
+                        <button type="submit" className='btn btn-danger btn__border calculator__button'> Error </button> :
+                        <button className='btn btn-outline-success btn__border calculator__button' onClick={addDiscountAction}>Agregar descuento</button>}
                 </div>
             </div>
         </section>

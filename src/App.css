@@ -1,16 +1,47 @@
+/* ================================= VARIABLES DE CSS  ================================= */
+
+:root{
+
+    --big-font-size: 2rem;
+    --h1-font-size: 1.5rem;
+    --h2-font-size: 1.25rem;
+    --h3-font-size: 1.125rem;
+    --normal-font-size: .938rem;
+    --small-font-size: .813rem;
+    --smaller-font-size: .75rem;
+
+
+
+
+
+
+
+
+}
+
+
+/* Font size para grandes dispositivos */
+
+@media screen and (min-width: 968px){
+  :root {
+      --big-font-size: 3rem;
+      --h1-font-size: 2.25rem;
+      --h2-font-size: 1.5rem;
+      --h3-font-size: 1.25rem;
+      --normal-font-size: 1rem;
+      --small-font-size: .875rem;
+      --smaller-font-size: .813rem;
+  }
+}
+
+
+
+
 *{
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-}
-
-*{
   list-style: none;
-}
-
-.input-error{
-  box-shadow: 0 0 0 0.25rem hsl(358deg 94% 50% / 52%);
-  border-color: hsl(358deg 94% 50% / 52%) ;
 }
 
 ul,li{
@@ -18,9 +49,52 @@ ul,li{
   padding: 0;
 }
 
-
 body{
   background: #dfefdc;  
+}
+
+h1{
+  font-size: var(--h1-font-size);  
+  font-weight: 600;
+}
+
+h2, .discount__title{
+  font-size: var(--h2-font-size);
+  font-weight: 600;
+}
+
+h3{
+  font-size: var(--h3-font-size);
+  font-weight: 600;
+}
+
+.calculator__paragraph, .create__paragraph, .info__paragraph{
+  font-size: var(--normal-font-size);
+  line-height: 1.5rem;
+  font-weight: 500;
+}
+
+.calculator__button, .create__button{
+  font-size: var(--small-font-size);
+  font-weight: 600;
+}
+
+.discount__subtitle, .discount__extra{
+  font-size: var(--normal-font-size);
+  font-weight: 500;
+}
+
+.discount__input{
+  font-size: var(--small-font-size);
+  font-weight: 500;
+}
+
+
+
+
+.input-error{
+  box-shadow: 0 0 0 0.25rem hsl(358deg 94% 50% / 52%);
+  border-color: hsl(358deg 94% 50% / 52%) ;
 }
 
 .discount__border, .modified__border{  
@@ -105,3 +179,30 @@ input[type=number] {
   -moz-appearance: textfield;
 }
 
+.input__border{
+  background-color: hsl(2, 70%, 96%);
+  background-color: red;
+  border-radius: 0.5rem;
+  padding: 0.75rem 1rem 0.25rem;
+}
+
+.input__label{
+  font-size: .75rem;
+  color: hsl(2,8%,15%);
+}
+
+.input__style{ 
+  background-color: hsl(2, 70%, 96%);
+  color: hsl(2, 8%, 45%);  
+  font-size: .938rem;
+  border: none;  
+}
+
+.input__span{
+  display: flex;
+  justify-content: flex-end;
+}
+
+.input__button{
+  width: 18%;
+}

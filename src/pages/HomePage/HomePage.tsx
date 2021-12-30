@@ -4,7 +4,7 @@ import CreateDiscount from "./sections/CreateDiscount"
 import ListOfDiscount from "./sections/ListOfDiscount"
 import ErrorToast from "../../components/ErrorToast"
 
-export default function HomePage() {
+export default function HomePage() {   
     return (
         <>
             <div className='container'>

@@ -115,23 +115,22 @@ export default function CreateDiscount() {
     }
 
     return (
-        <section className={`col-12 col-md-10 col-lg-10 p-3 ${allUserDiscounts.length > 0 && 'col-xl-5 order-xl-1'}  `}>
+        <section className={`col-12 col-md-10 col-lg-10 p-3 ${allUserDiscounts.length > 0 && 'col-xl-5 order-xl-1 '}  `}>
             <div className='modified__border my-4 px-2'>
-                <h3 className="pt-4 pb-2 text-center fw-bold fs-3 m-0">Mis descuentos</h3>
-                <p className='px-2 pt-2 m-0 fs-6'>
+                <h3 className="pt-4 pb-2 text-center m-0">Mis descuentos</h3>
+                <p className='px-2 pt-2 m-0 create__paragraph'>
                     Podrás llevar la cuenta de los descuentos que estás utilizando y maximizar tu ahorro.
                 </p>
                 <form className="row row-cols-1 row-cols-sm-2 m-0" onSubmit={onSubmit}>
                     <SimpleInput
                         inputId='nuevoAhorro'
-                        labelText='Nombre: '
-                        placeHolder='Ej: 40 % supermercados'
+                        labelText='Nombre: '                       
                         inputType='text'
                         OnChangeFunction={
                             (e: any) => {
                                 if (inputDiscountName(e) === 'inputError') {
                                     setDiscountNameError('Ingrese un nombre de descuento válido, max caracteres 30')
-
+                                    setDiscountName(undefined)
                                 }
                                 else {
                                     setDiscountNameError(undefined)
@@ -146,7 +145,6 @@ export default function CreateDiscount() {
                     <ComplexInput
                         inputId='newPorcentajeAhorro'
                         labelText='Porcentaje de ahorro: '
-                        placeHolder='Ej: 15'
                         inputType='number'
                         OnChangeFunction={
                             (e: any) => {
@@ -167,7 +165,6 @@ export default function CreateDiscount() {
                     <ComplexInput
                         inputId='newTopeAhorro'
                         labelText='Tope de reintegro: '
-                        placeHolder='Ej: 1000'
                         inputType='number'
                         OnChangeFunction={
                             (e: any) => {
@@ -205,8 +202,8 @@ export default function CreateDiscount() {
                     />
                     <div className="d-flex justify-content-center align-items-center py-4 w-100">
                         {!isSubmitError ?
-                            <input type="submit" value="Guardar descuento" className='btn btn-outline-success btn__border' /> :
-                            <input type="submit" value="Error" className='btn btn-danger btn__border' />
+                            <input type="submit" value="Guardar descuento" className='btn btn-outline-success btn__border create__button' /> :
+                            <input type="submit" value="Error" className='btn btn-danger btn__border create__button' />
                         }
                     </div>
                 </form>

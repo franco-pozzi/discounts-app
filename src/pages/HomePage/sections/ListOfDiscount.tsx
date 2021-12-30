@@ -3,6 +3,8 @@ import { useContext, useState, useEffect } from 'react'
 import { DiscountsContext } from '../../../context/DiscountsContext'
 import { ErrorContext } from '../../../context/ErrorContext'
 
+import ComplexInput from '../../../components/ComplexInput'
+
 import { inputNewPurchase } from '../../../services/inputLogic'
 
 import { BsTrash, BsPlus } from 'react-icons/bs'
@@ -66,16 +68,16 @@ const DiscountArray = ({ isMobile }: any) => {
                         </div>
 
                         <ul className='text-center'>
-                            <li className='mb-1 fw-bold fs-3' >{discount.discountName}</li>
-                            <li className='mb-2 fw-normal fs-5'>{discount.discountAmount}% de ahorro, tope de $ {discount.refundAmount}</li>
-                            <li className='mb-2 fw-light fs-5'>vencimiento: {discount.discountExpiration}</li>
+                            <li className='mb-1 discount__title' >{discount.discountName}</li>
+                            <li className='mb-2 discount__subtitle'>{discount.discountAmount}% de ahorro, tope de $ {discount.refundAmount}</li>
+                            <li className='mb-2 discount__extra'>vencimiento: {discount.discountExpiration}</li>
                         </ul>
 
                         <div className="border-top my-1"></div>
 
                         <ul className='my-3 ms-4 purchase__container'>
-                            <li className="d-flex justify-content-between fs-5" style={PurchaseArray({ discount }).length > 0 ? { paddingRight: '16%' } : { paddingRight: '10%' }} >
-                                <span className='fw-bolder '>Gasto maximo </span>
+                            <li className="d-flex justify-content-between discount__extra" style={PurchaseArray({ discount }).length > 0 ? { paddingRight: '16%' } : { paddingRight: '10%' }} >
+                                <span className='fw-bolder'>Gasto maximo </span>
                                 <span className='text-end'> $ {discount.maximumSpending}</span>
                             </li>
 
@@ -84,16 +86,18 @@ const DiscountArray = ({ isMobile }: any) => {
 
                         <div className="border-top my-2"></div>
 
-                        <ul className='my-3 ms-4'>
-                            <li className="d-flex justify-content-between fs-5" style={PurchaseArray({ discount }).length > 0 ? { paddingRight: '16%' } : { paddingRight: '10%' }} >
+                        <ul className='my-3 ms-4 discount__extra'>
+                            <li className="d-flex justify-content-between" style={PurchaseArray({ discount }).length > 0 ? { paddingRight: '16%' } : { paddingRight: '10%' }} >
                                 <span className='fw-bolder'>{discount.remainingAmount > 0 ? 'Restan' : 'Excediste '}</span>
                                 <span className='text-end'> $ {discount.remainingAmount > 0 ? discount.remainingAmount : -discount.remainingAmount}</span>
                             </li>
 
                             <RemainingDays discount={discount} />
                         </ul>
+                        <div className="container">
+                            <HandleUserInput discount={discount} setSelectedToast={setSelectedToast} />
+                        </div>
 
-                        <HandleUserInput discount={discount} setSelectedToast={setSelectedToast} />
                     </div>
                 </div>
             ))}
@@ -115,11 +119,11 @@ const PurchaseArray = ({ discount, setSelectedToast }: any) => {
             <div className='my-1 text-end' style={{ paddingRight: '40%' }}>-</div>
             <div className='d-flex flex-row'>
                 <div className='d-flex flex-column w-100'>
-                    <li className="d-flex justify-content-between fs-5">
+                    <li className="d-flex justify-content-between">
                         <span className='fw-bolder'>Compra</span>
                         <span className='text-end'> $ {purchase.amount}</span>
                     </li>
-                    <li className='my-0 fs-6'>{purchase.day}</li>
+                    <li className='my-0 '>{purchase.day}</li>
                 </div>
                 <div className='d-flex justify-content-end align-items-center me-1' style={{ width: '18%' }}>
                     <button className='btn p-2' onClick={() => onClickDeletePurchase(discount, purchase)} >  {/* Colocar confirmacion para eliminar con state */}
@@ -153,13 +157,13 @@ const RemainingDays = ({ discount }: any) => {
 
     switch (restDates()) {
         case 1:
-            return <li className='my-0 fs-6'>1 día restante</li>
+            return <li className='my-0 '>1 día restante</li>
 
         case 'error':
-            return <li className='mt-3 fs-4 fw-bold text-center' style={{ color: '#198754' }}>Descuento Vencido</li>
+            return <li className='mt-3 fw-bold text-center' style={{ color: '#198754' }}>Descuento Vencido</li>
 
         default:
-            return <li className='my-0 fs-6'>{restDates()} días restantes</li>
+            return <li className='my-0 '>{restDates()} días restantes</li>
     }
 }
 
@@ -199,19 +203,19 @@ const HandleUserInput = ({ discount, setSelectedToast }: any) => {
 
     return (
         <>
-            <div className={`input-group px-sm-2 pt-1 fs-5 ${inputError ? 'pb-0' : 'pb-3'}`}>
-                <span className='input-group-text col-7 ps-2 pe-1 justify-content-between align-items-center discount__border'>
-                    <span className="text-start fw-bold" style={{ fontSize: '14px' }}>AGREGAR COMPRA:</span>
+            <div className='row row-cols-1 discount__input m-0'>
+
+                {/* <div className='d-flex col-7 ps-2 pe-1 justify-content-between align-items-center '>
+                    <span className="text-start fw-bold">AGREGAR COMPRA:</span>
                     <span className="text-end fw-bold">$</span>
-                </span>
+                </div>
 
                 <input type="number"
-                    placeholder='Ej: 500'
-                    className='form-control col-2 text-center'
+                    className='col text-center p-0'
                     onChange={
                         (e: any) => {
                             if (inputNewPurchase(e) === 'inputError') {
-                                setPurchaseValue(e.target.value)
+                                setPurchaseValue(undefined)
                                 setInputError('La compra mínima es 0 y la máxima es 100000')
                             }
                             else {
@@ -223,12 +227,42 @@ const HandleUserInput = ({ discount, setSelectedToast }: any) => {
                     value={purchaseValue || ''}
                 />
 
+
+
                 {!inputError ?
-                    <button type="button" className='btn btn-outline-success col-2 discount__border' onClick={() => onClickAddButton(discount)}><BsPlus /></button> :
-                    <button type="button" className='btn btn-outline-danger col-2 discount__border'>!</button>
-                }
+                    <button type="button" className='btn btn-outline-success input__button' onClick={() => onClickAddButton(discount)}><BsPlus /></button> :
+                    <button type="button" className='btn btn-outline-danger input__button'>!</button>
+                } */}
+
+                <ComplexInput
+                        inputId='newPorcentajeAhorro'
+                        labelText='Agregar compra: '
+                        inputType='number'
+                        OnChangeFunction={
+                            (e: any) => {
+                                if (inputNewPurchase(e) === 'inputError') {
+                                    setInputError('El porcentaje mínimo es 1 y el máximo 100')
+                                    setPurchaseValue(undefined)
+                                } else {
+                                    setPurchaseValue(inputNewPurchase(e))
+                                    setInputError(undefined)
+                                }
+                            }
+                        }
+                        inputText='$'
+                        errorMessage={inputError}
+                        value={purchaseValue}
+                    />
+
             </div>
-            {inputError && <div className='p-1 text-center' style={{ color: 'red' }}> {inputError} </div>}
+            {/* {inputError && <div className='p-1 text-center' style={{ color: 'red' }}> {inputError} </div>} */}
+
+            <div className="d-flex justify-content-center align-items-center py-1 w-100">
+                        {!inputError ?
+                            <button type="submit"  className='btn btn-outline-success btn__border create__button' onClick={() => onClickAddButton(discount)}> Guardar Compra </button> :
+                            <button type="submit" value="Error" className='btn btn-danger btn__border create__button'>Error </button> 
+                        }
+                    </div>
         </>
     )
 }
